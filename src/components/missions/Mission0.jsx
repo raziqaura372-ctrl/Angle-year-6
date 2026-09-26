@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import DynamicAngleCanvas from '../geometry/DynamicAngleCanvas';
 import FormativeFeedback from '../ai/FormativeFeedback';
 import { useGame } from '../../context/GameContext';
-import { Compass, Sparkles, CheckCircle } from 'lucide-react';
+import { Compass, Sparkles, CheckCircle, ArrowRight } from 'lucide-react';
+import confetti from 'canvas-confetti';
 
 export default function Mission0({ onComplete }) {
   const [angle, setAngle] = useState(45);
@@ -10,49 +11,76 @@ export default function Mission0({ onComplete }) {
   const { completeMission } = useGame();
 
   const handleFinish = () => {
-    setCompleted(true);
-    completeMission(0, 100, 3);
-    if (onComplete) onComplete();
+    if (!completed) {
+      setCompleted(true);
+      completeMission(0, 100, 3);
+      try {
+        confetti({
+          particleCount: 80,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+      } catch (e) {
+        // Fallback if confetti unavailable
+      }
+    }
   };
 
   return (
-    <div className="space-y-6">
-      <div className="glass-panel p-6 rounded-xl border border-sand-500/30">
-        <div className="flex items-center gap-3 mb-2">
-          <div className="w-10 h-10 rounded-full bg-sand-500/20 flex items-center justify-center text-sand-500">
-            <Compass className="w-6 h-6" />
+    <div className="space-y-6 font-sans">
+      {/* Playful Banner */}
+      <div className="desert-card p-6 rounded-3xl border-2 border-amber-400/60 bg-gradient-to-r from-slate-900 via-amber-950/40 to-slate-900 shadow-xl relative overflow-hidden">
+        <div className="flex items-center gap-4 mb-3">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-400 to-orange-500 flex items-center justify-center text-slate-950 font-black shadow-md border border-amber-200">
+            <Compass className="w-7 h-7 stroke-[2.5]" />
           </div>
           <div>
-            <h2 className="font-serif text-2xl font-bold text-sand-100">MISSION 0 – DESERT ARRIVAL</h2>
-            <p className="text-sand-300 text-xs">Tutorial & Exploration of Interactive Angle Tools</p>
+            <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/40 text-[11px] font-black uppercase">
+              <Sparkles className="w-3.5 h-3.5 text-amber-300 fill-amber-300" /> MISSION 0 – TUTORIAL
+            </div>
+            <h2 className="text-2xl font-extrabold text-amber-300 tracking-wide mt-0.5">
+              DESERT ARRIVAL & RAY EXPLORATION
+            </h2>
           </div>
         </div>
-        <p className="text-sand-200 text-sm leading-relaxed mt-2">
-          Welcome to the Desert Expedition! Before navigating through ancient gates and dune pathways, you must master the fundamental components of an angle: the <strong>vertex (titik sudut)</strong> and the two <strong>rays/arms (lengan sudut)</strong>.
+        <p className="text-amber-100 text-sm leading-relaxed font-medium">
+          🤠 <strong>Luma says:</strong> "Welcome, Explorer! Before we travel across ancient sand dunes, let's learn how angles work! An angle has a <strong>Vertex (Titik Sudut)</strong> where two colorful <strong>Rays (Lengan Sudut)</strong> meet. Drag the golden handle to change the angle!"
         </p>
       </div>
 
+      {/* Dynamic Canvas */}
       <DynamicAngleCanvas
-        label="Explore the Ray Controls & Protractor Tool"
+        label="Dynamic Ray Controls & Protractor Practice"
         onAngleChange={(a) => setAngle(a)}
         showProtractorDefault={true}
       />
 
+      {/* Formative Feedback */}
       <FormativeFeedback
         currentAngle={angle}
         targetAngle={60}
-        customMessage={`Experiment with dragging the golden handle! You are currently at ${angle}°. Set the angle to approximately 60° to calibrate your expedition compass.`}
+        customMessage={`Try dragging the handle! Current angle is ${angle}°. Calibrate Luma's compass by setting the angle close to 60°!`}
         onSuccess={handleFinish}
       />
 
-      {angle >= 57 && angle <= 63 && !completed && (
-        <div className="p-4 bg-oasis-900/60 rounded-xl border border-oasis-500 text-center space-y-3">
-          <h3 className="font-serif text-lg font-bold text-oasis-300">Compass Calibrated Successfully!</h3>
+      {/* Success Box */}
+      {angle >= 57 && angle <= 63 && (
+        <div className="p-6 bg-slate-900 rounded-3xl border-2 border-emerald-400/80 oasis-glow text-center space-y-4 shadow-2xl">
+          <div className="text-3xl">🌟 Compass Calibrated! 🌟</div>
+          <h3 className="font-black text-xl text-emerald-300">
+            Great exploration! You found 60°!
+          </h3>
+          <p className="text-xs text-amber-100/90 font-medium max-w-md mx-auto">
+            You are ready to enter the Dune of Angles and classify acute, right, and obtuse angles!
+          </p>
           <button
-            onClick={handleFinish}
-            className="px-6 py-2.5 rounded-lg bg-gradient-to-r from-sand-500 to-terracotta-500 text-desertNavy-950 font-bold text-sm gold-glow hover:scale-105 transition-transform"
+            onClick={() => {
+              handleFinish();
+              if (onComplete) onComplete();
+            }}
+            className="px-8 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-400 via-teal-400 to-amber-400 text-slate-950 font-black text-sm playful-btn hover:scale-105 transition-all shadow-xl inline-flex items-center gap-2"
           >
-            Complete Mission 0 & Unlock Dune of Angles
+            START EXPEDITION <ArrowRight className="w-5 h-5 stroke-[3]" />
           </button>
         </div>
       )}

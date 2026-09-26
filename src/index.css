@@ -3,46 +3,145 @@
 @layer base {
   body {
     margin: 0;
-    background-color: #0A192F;
-    color: #F5EFE6;
-    font-family: 'Inter', system-ui, sans-serif;
+    background: #1C1936;
+    background: radial-gradient(circle at 50% 20%, #2A2453 0%, #17132B 60%, #0F0C1B 100%);
+    color: #FFF7ED;
+    font-family: 'Fredoka', 'Comic Sans MS', 'Quicksand', 'Inter', system-ui, sans-serif;
     overflow-x: hidden;
   }
 }
 
-/* Custom Desert Scrollbar */
+/* Custom Vibrant Desert Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0A192F;
+  background: #1E1B3A;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #C85A32;
-  border-radius: 4px;
+  background: linear-gradient(180deg, #FFB800 0%, #F97316 100%);
+  border-radius: 9999px;
+  border: 2px solid #1E1B3A;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #D4AF37;
+  background: #FBBF24;
 }
 
-.desert-gradient {
-  background: linear-gradient(135deg, #0A192F 0%, #0F233D 50%, #1E120B 100%);
+/* Desert Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(1deg); }
+}
+
+@keyframes cloud-drift {
+  0% { transform: translateX(-10%); }
+  50% { transform: translateX(10%); }
+  100% { transform: translateX(-10%); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { filter: drop-shadow(0 0 8px rgba(255, 184, 0, 0.6)); }
+  50% { filter: drop-shadow(0 0 20px rgba(255, 184, 0, 0.9)); }
+}
+
+@keyframes oasis-pulse {
+  0%, 100% { filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.5)); }
+  50% { filter: drop-shadow(0 0 22px rgba(16, 185, 129, 0.85)); }
+}
+
+@keyframes bounce-gentle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes rotate-sun {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-cloud {
+  animation: cloud-drift 25s ease-in-out infinite;
+}
+
+.animate-bounce-gentle {
+  animation: bounce-gentle 2s ease-in-out infinite;
+}
+
+.animate-sun-spin {
+  animation: rotate-sun 40s linear infinite;
+}
+
+/* Playful UI Utility Classes */
+.desert-card {
+  background: linear-gradient(135deg, rgba(38, 33, 70, 0.92) 0%, rgba(26, 22, 51, 0.95) 100%);
+  backdrop-filter: blur(12px);
+  border: 2px solid rgba(255, 184, 0, 0.3);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  border-radius: 1.25rem;
+}
+
+.desert-card-interactive {
+  background: linear-gradient(135deg, rgba(46, 40, 84, 0.95) 0%, rgba(30, 26, 58, 0.95) 100%);
+  backdrop-filter: blur(12px);
+  border: 2px solid rgba(255, 184, 0, 0.4);
+  box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.25);
+  border-radius: 1.25rem;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.desert-card-interactive:hover {
+  transform: translateY(-4px) scale(1.02);
+  border-color: #FFB800;
+  box-shadow: 0 18px 36px -8px rgba(255, 184, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.4);
 }
 
 .glass-panel {
-  background: rgba(15, 35, 61, 0.85);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(212, 175, 55, 0.25);
+  background: rgba(30, 26, 58, 0.88);
+  backdrop-filter: blur(16px);
+  border: 2px solid rgba(255, 184, 0, 0.3);
+  border-radius: 1.25rem;
+}
+
+.playful-btn {
+  font-weight: 800;
+  letter-spacing: 0.025em;
+  border-radius: 1rem;
+  transition: all 0.15s ease-out;
+  box-shadow: 0 6px 0 0 rgba(0, 0, 0, 0.35);
+  position: relative;
+  top: 0;
+}
+
+.playful-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 0 0 rgba(0, 0, 0, 0.35);
+}
+
+.playful-btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.35);
 }
 
 .gold-glow {
-  box-shadow: 0 0 15px rgba(212, 175, 55, 0.35);
+  box-shadow: 0 0 20px rgba(255, 184, 0, 0.45);
 }
 
 .oasis-glow {
-  box-shadow: 0 0 15px rgba(0, 168, 150, 0.4);
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+}
+
+.purple-glow {
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.5);
+}
+
+.sky-glow {
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.5);
 }
