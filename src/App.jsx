@@ -6,6 +6,7 @@ import SidebarNav from './components/SidebarNav';
 import DesertScenery from './components/visuals/DesertScenery';
 import MascotAvatars from './components/visuals/MascotAvatars';
 import GraphicalMap from './components/visuals/GraphicalMap';
+import DesertGeometryAcademy from './components/academy/DesertGeometryAcademy';
 
 import Mission0 from './components/missions/Mission0';
 import Mission1 from './components/missions/Mission1';
@@ -23,7 +24,7 @@ import TeacherDashboard from './components/teacher/TeacherDashboard';
 import AcademicHub from './components/academic/AcademicHub';
 
 function MainContent() {
-  const { activeTab, activeMissionId, setActiveMissionId } = useGame();
+  const { activeTab, setActiveTab, activeMissionId, setActiveMissionId, completeAcademy } = useGame();
 
   const renderMissionComponent = () => {
     switch (activeMissionId) {
@@ -49,6 +50,9 @@ function MainContent() {
         <MascotAvatars />
 
         {/* Tab Routing */}
+        {activeTab === 'academy' && (
+          <DesertGeometryAcademy onUnlockMission1={() => completeAcademy()} />
+        )}
         {activeTab === 'map' && <GraphicalMap />}
         {activeTab === 'mission' && renderMissionComponent()}
         {activeTab === 'badges' && <BadgeSanctuary />}

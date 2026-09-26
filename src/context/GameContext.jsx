@@ -22,8 +22,11 @@ export const INITIAL_PROGRESS = {
 };
 
 export function GameProvider({ children }) {
-  const [activeTab, setActiveTab] = useState('map'); // 'map', 'mission', 'badges', 'journal', 'teacher', 'academic'
+  const [activeTab, setActiveTab] = useState('academy'); // 'academy', 'map', 'mission', 'badges', 'journal', 'teacher', 'academic'
   const [activeMissionId, setActiveMissionId] = useState(0);
+  const [academyCompleted, setAcademyCompleted] = useState(() => {
+    return localStorage.getItem('dge_academy_completed') === 'true';
+  });
   const [xp, setXp] = useState(() => parseInt(localStorage.getItem('dge_xp') || '0', 10));
   const [coins, setCoins] = useState(() => parseInt(localStorage.getItem('dge_coins') || '50', 10));
   const [streak, setStreak] = useState(1);
@@ -41,6 +44,10 @@ export function GameProvider({ children }) {
     return saved ? JSON.parse(saved) : [];
   });
   const [teacherLogs, setTeacherLogs] = useState([]);
+
+  useEffect(() => {
+    localStorage.setItem('dge_academy_completed', academyCompleted.toString());
+  }, [academyCompleted]);
 
   useEffect(() => {
     localStorage.setItem('dge_xp', xp.toString());
@@ -62,6 +69,12 @@ export function GameProvider({ children }) {
     localStorage.setItem('dge_reflections', JSON.stringify(reflections));
   }, [reflections]);
 
+  const completeAcademy = () => {
+    setAcademyCompleted(true);
+    addXp(150);
+    setActiveTab('map');
+  };
+
   const addXp = (amount) => {
     setXp(prev => prev + amount);
     setCoins(prev => prev + Math.floor(amount / 2));
@@ -78,14 +91,12 @@ export function GameProvider({ children }) {
     }));
     addXp(100 * stars);
 
-    // Auto unlock badges based on mission milestone
     if (missionId === 1) unlockBadge('angle_tracker');
     if (missionId === 3) unlockBadge('precision_builder');
     if (missionId === 4) unlockBadge('polygon_navigator');
     if (missionId === 6) unlockBadge('oasis_architect');
     if (missionId === 7) unlockBadge('master_geometer');
 
-    // Add teacher log
     setTeacherLogs(prev => [
       { timestamp: new Date().toLocaleTimeString(), action: `Completed Mission ${missionId} with ${stars} stars (Score: ${score})` },
       ...prev
@@ -113,6 +124,8 @@ export function GameProvider({ children }) {
       setActiveTab,
       activeMissionId,
       setActiveMissionId,
+      academyCompleted,
+      completeAcademy,
       xp,
       addXp,
       coins,
