@@ -3,12 +3,12 @@ import DynamicAngleCanvas from '../geometry/DynamicAngleCanvas';
 import PolygonGridCanvas from '../geometry/PolygonGridCanvas';
 import FormativeFeedback from '../ai/FormativeFeedback';
 import { useGame } from '../../context/GameContext';
-import { Crown, Sparkles, CheckCircle2, FileText } from 'lucide-react';
+import { Crown, Sparkles, FileText, ArrowRight } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export default function Mission7Boss({ onComplete }) {
-  const [stage, setStage] = useState(1); // Stage 1: Entrance Gate Angle, Stage 2: Central Oasis Polygon, Stage 3: Written Justification
-  const [angle, setAngle] = useState(45);
+  const [stage, setStage] = useState(1);
+  const [angle, setAngle] = useState(60);
   const targetGateAngle = 135;
   const [polygonData, setPolygonData] = useState(null);
   const [justificationText, setJustificationText] = useState('');
@@ -31,16 +31,13 @@ export default function Mission7Boss({ onComplete }) {
     e.preventDefault();
     if (!justificationText.trim()) return;
 
-    // Trigger celebration confetti
     try {
       confetti({
-        particleCount: 100,
-        spread: 70,
+        particleCount: 120,
+        spread: 90,
         origin: { y: 0.6 }
       });
-    } catch (e) {
-      // Fallback if confetti script not available
-    }
+    } catch (e) {}
 
     addReflection({
       topic: 'Hidden Oasis Boss Final Justification',
@@ -49,41 +46,41 @@ export default function Mission7Boss({ onComplete }) {
     });
 
     setCompleted(true);
-    completeMission(7, 200, 3);
+    completeMission(7, 300, 3);
     if (onComplete) onComplete();
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 font-sans">
       {/* Title Header */}
-      <div className="glass-panel p-6 rounded-xl border-2 border-sand-500 gold-glow bg-gradient-to-r from-desertNavy-950 via-desertNavy-900 to-sand-900/30">
-        <div className="flex items-center gap-3 mb-2">
-          <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-sand-500 to-terracotta-500 flex items-center justify-center text-desertNavy-950 shadow-lg">
-            <Crown className="w-7 h-7" />
+      <div className="desert-card p-6 md:p-8 rounded-3xl border-2 border-amber-400/80 gold-glow bg-gradient-to-r from-slate-900 via-amber-950/50 to-slate-900 shadow-2xl relative overflow-hidden">
+        <div className="flex items-center gap-4 mb-3">
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-300 via-yellow-400 to-emerald-400 flex items-center justify-center text-slate-950 font-black shadow-lg border border-amber-200 animate-bounce-gentle">
+            <Crown className="w-8 h-8 stroke-[2.5]" />
           </div>
           <div>
-            <h2 className="font-serif text-2xl md:text-3xl font-extrabold text-sand-100 tracking-wide">
-              FINAL BOSS CHALLENGE: THE HIDDEN OASIS ARCHITECT
+            <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/40 text-[11px] font-black uppercase">
+              <Sparkles className="w-3.5 h-3.5 text-amber-300 fill-amber-300" /> FINAL BOSS EXPEDITION
+            </div>
+            <h2 className="text-2xl md:text-3xl font-extrabold text-amber-300 tracking-wide mt-0.5">
+              THE HIDDEN OASIS ARCHITECT SANCTUARY
             </h2>
-            <p className="text-sand-300 text-xs md:text-sm font-medium">
-              Multi-Stage Dynamic Geometry & Mathematical Justification Integration
-            </p>
           </div>
         </div>
-        <p className="text-sand-200 text-sm leading-relaxed mt-2">
-          You have reached the legendary Hidden Oasis! To restore its ancient geometric ecosystem, you must complete a 3-part mastery challenge combining precise angle construction, octagonal polygon design, and rigorous mathematical justification.
+        <p className="text-amber-100 text-sm leading-relaxed font-medium max-w-2xl">
+          🤠 <strong>Luma says:</strong> "You have reached the legendary 🌟 <strong>Hidden Oasis</strong>! To restore the sanctuary, complete this 3-stage Master Geometer challenge!"
         </p>
 
         {/* Multi-Stage Tracker */}
-        <div className="grid grid-cols-3 gap-2 mt-4 text-xs font-bold text-center">
-          <div className={`p-2 rounded border ${stage >= 1 ? 'bg-sand-500 text-desertNavy-950 border-sand-400' : 'bg-desertNavy-800 text-sand-400 border-sand-500/20'}`}>
+        <div className="grid grid-cols-3 gap-3 mt-5 text-xs font-black text-center">
+          <div className={`p-3 rounded-2xl border-2 transition-all ${stage >= 1 ? 'bg-amber-400 text-slate-950 border-amber-300 shadow-md' : 'bg-slate-950 text-amber-300/60 border-amber-400/20'}`}>
             1. Gate Angle (135°)
           </div>
-          <div className={`p-2 rounded border ${stage >= 2 ? 'bg-sand-500 text-desertNavy-950 border-sand-400' : 'bg-desertNavy-800 text-sand-400 border-sand-500/20'}`}>
+          <div className={`p-3 rounded-2xl border-2 transition-all ${stage >= 2 ? 'bg-amber-400 text-slate-950 border-amber-300 shadow-md' : 'bg-slate-950 text-amber-300/60 border-amber-400/20'}`}>
             2. Octagon Courtyard (8 Sisi)
           </div>
-          <div className={`p-2 rounded border ${stage >= 3 ? 'bg-sand-500 text-desertNavy-950 border-sand-400' : 'bg-desertNavy-800 text-sand-400 border-sand-500/20'}`}>
-            3. Written Justification
+          <div className={`p-3 rounded-2xl border-2 transition-all ${stage >= 3 ? 'bg-amber-400 text-slate-950 border-amber-300 shadow-md' : 'bg-slate-950 text-amber-300/60 border-amber-400/20'}`}>
+            3. Mathematical Reason
           </div>
         </div>
       </div>
@@ -111,8 +108,8 @@ export default function Mission7Boss({ onComplete }) {
       {/* Stage 2: Octagon Courtyard */}
       {stage === 2 && (
         <div className="space-y-4">
-          <div className="bg-desertNavy-800 p-4 rounded-xl border border-sand-500/30 text-xs text-sand-200">
-            <strong>Stage 2 Requirement:</strong> Select an 8-sided <strong>Oktagon</strong> polygon, drag the vertices on the grid to complete the courtyard perimeter, and verify that the total interior angle sum equals <strong>(8-2) × 180° = 1080°</strong>.
+          <div className="desert-card p-4 rounded-2xl border border-amber-400/40 text-xs text-amber-100 font-medium">
+            <strong>Stage 2 Requirement:</strong> Select an 8-sided <strong>Oktagon</strong> polygon, drag the grid handles, and verify that the interior angle sum equals <strong>(8-2) × 180° = 1080°</strong>.
           </div>
 
           <PolygonGridCanvas
@@ -121,13 +118,15 @@ export default function Mission7Boss({ onComplete }) {
           />
 
           {polygonData && polygonData.sides === 8 && (
-            <div className="p-4 bg-oasis-900/60 rounded-xl border border-oasis-500 text-center space-y-3">
-              <h4 className="font-serif font-bold text-oasis-300">Octagon Courtyard Verified! (Total Interior Sum: {polygonData.totalInteriorSum}°)</h4>
+            <div className="p-6 bg-slate-900 rounded-3xl border-2 border-emerald-400/80 oasis-glow text-center space-y-4 shadow-2xl">
+              <h4 className="font-extrabold text-lg text-emerald-300">
+                Octagon Courtyard Verified! (Total Interior Sum: {polygonData.totalInteriorSum}°)
+              </h4>
               <button
                 onClick={handleStage2Next}
-                className="px-6 py-2.5 rounded-lg bg-gradient-to-r from-sand-500 to-terracotta-500 text-desertNavy-950 font-bold text-sm gold-glow hover:scale-105 transition-transform"
+                className="px-8 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-400 via-teal-400 to-amber-400 text-slate-950 font-black text-sm playful-btn hover:scale-105 transition-all shadow-xl inline-flex items-center gap-2"
               >
-                Proceed to Stage 3: Mathematical Justification
+                PROCEED TO REASONING <ArrowRight className="w-5 h-5 stroke-[3]" />
               </button>
             </div>
           )}
@@ -136,42 +135,42 @@ export default function Mission7Boss({ onComplete }) {
 
       {/* Stage 3: Written Justification */}
       {stage === 3 && !completed && (
-        <form onSubmit={handleFinalSubmit} className="glass-panel p-6 rounded-xl border border-sand-500/40 space-y-4">
-          <h3 className="font-serif text-lg font-bold text-sand-100 flex items-center gap-2">
-            <FileText className="w-5 h-5 text-oasis-400" />
+        <form onSubmit={handleFinalSubmit} className="desert-card p-6 rounded-3xl border-2 border-amber-400/60 space-y-4 shadow-xl">
+          <h3 className="font-extrabold text-lg text-amber-300 flex items-center gap-2">
+            <FileText className="w-5 h-5 text-emerald-400" />
             Stage 3: Mathematical Reasoning & Explanation (DSKP KKG5)
           </h3>
-          <p className="text-xs text-sand-300 leading-relaxed">
+          <p className="text-xs text-amber-100/90 leading-relaxed font-medium">
             Explain <strong>WHY</strong> the total interior angle sum of an 8-sided polygon is 1080°, and how dynamic manipulation on a grid helped you prove this mathematical relationship.
           </p>
 
           <textarea
-            rows="5"
+            rows="4"
             value={justificationText}
             onChange={(e) => setJustificationText(e.target.value)}
-            placeholder="Write your mathematical explanation here (e.g. 'An octagon can be partitioned into 6 triangles from a single vertex. Since each triangle has 180°, (8-2) × 180° = 1080°...')"
-            className="w-full bg-desertNavy-950 border border-sand-500/30 rounded-lg p-3 text-sm text-sand-100 focus:outline-none focus:border-sand-500"
+            placeholder="Write your explanation here (e.g., 'An octagon can be split into 6 triangles from one vertex. Since each triangle sum is 180°, (8-2) × 180° = 1080°...')"
+            className="w-full bg-slate-950 border-2 border-amber-400/40 rounded-2xl p-3.5 text-xs text-amber-100 placeholder-amber-500/50 focus:outline-none focus:border-amber-400 font-medium"
             required
           />
 
           <button
             type="submit"
-            className="w-full py-3 rounded-xl bg-gradient-to-r from-sand-500 via-terracotta-500 to-oasis-500 text-desertNavy-950 font-extrabold text-base gold-glow hover:scale-[1.02] transition-transform"
+            className="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-400 via-orange-400 to-emerald-400 text-slate-950 font-black text-base playful-btn shadow-xl hover:scale-102 transition-transform"
           >
-            Submit Final Expedition Justification & Claim Master Geometer Rank
+            CLAIM MASTER GEOMETER TROPHY 🏆
           </button>
         </form>
       )}
 
       {/* Completed Banner */}
       {completed && (
-        <div className="glass-panel p-8 rounded-2xl border-2 border-oasis-400 oasis-glow text-center space-y-4 bg-gradient-to-b from-oasis-950/80 to-desertNavy-950">
-          <div className="w-16 h-16 rounded-full bg-sand-500 text-desertNavy-950 flex items-center justify-center mx-auto text-2xl font-bold shadow-xl">
+        <div className="desert-card p-8 rounded-3xl border-2 border-emerald-400 oasis-glow text-center space-y-4 bg-gradient-to-b from-slate-900 to-emerald-950/60 shadow-2xl">
+          <div className="w-16 h-16 rounded-3xl bg-amber-400 text-slate-950 flex items-center justify-center mx-auto text-3xl font-black shadow-xl border-2 border-amber-200 animate-bounce-gentle">
             🏆
           </div>
-          <h2 className="font-serif text-3xl font-extrabold text-sand-100">EXPEDITION COMPLETE!</h2>
-          <p className="text-sand-200 text-sm max-w-xl mx-auto leading-relaxed">
-            You have successfully completed the <strong>Desert Geometry Expedition</strong>! You demonstrated advanced relational understanding of angles (DSKP 6.1.1 & 6.1.2) and unlocked the highest rank: <strong>Master of the Hidden Oasis</strong>.
+          <h2 className="font-black text-3xl text-amber-300">EXPEDITION COMPLETE!</h2>
+          <p className="text-amber-100 text-sm max-w-xl mx-auto leading-relaxed font-medium">
+            You have successfully completed the <strong>Desert Geometry Expedition</strong>! You demonstrated advanced relational understanding of angles (DSKP 6.1.1 & 6.1.2) and unlocked the highest rank: <strong>Master Geometer of the Hidden Oasis</strong>.
           </p>
         </div>
       )}

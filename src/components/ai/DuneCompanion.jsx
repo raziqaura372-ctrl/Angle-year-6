@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
-import { Bot, Lightbulb, HelpCircle, ChevronRight, Sparkles, MessageSquare } from 'lucide-react';
+import { Compass, Lightbulb, ChevronRight, Sparkles, Heart, MessageCircle } from 'lucide-react';
 
 export default function DuneCompanion({
   missionTitle = "Current Expedition Challenge",
-  hintLevel1 = "Visual clue: Observe where the rays intersect at the vertex V.",
-  hintLevel2 = "Conceptual hint: Remember an acute angle is less than 90°, while an obtuse angle is between 90° and 180°.",
-  hintLevel3 = "Mathematical guidance: Try rotating the upper ray clockwise until the degree readout matches the target angle.",
+  hintLevel1 = "Visual clue: Observe where the two colorful rays intersect at the vertex V!",
+  hintLevel2 = "Conceptual hint: Remember an acute angle is sharp and small (< 90°), while an obtuse angle is wide open (> 90°).",
+  hintLevel3 = "Mathematical guidance: Try rotating the upper ray clockwise until the angle arc matches your target measurement!",
   reflectionPrompt = "Why does changing the angle size affect the shape of the desert entrance gate?"
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [hintLevel, setHintLevel] = useState(0); // 0: None, 1: Level 1, 2: Level 2, 3: Level 3
+  const [hintLevel, setHintLevel] = useState(0);
   const [userQuery, setUserQuery] = useState('');
   const [chatLogs, setChatLogs] = useState([
     {
-      sender: 'dune',
-      text: `Greetings, Expedition Leader! I am DUNE (Digital Understanding & Navigation Educator). I am here to scaffold your geometric thinking across the desert!`
+      sender: 'luma',
+      text: `Salam Explorer! I'm LUMA THE DESERT EXPLORER 🤠✨ I'm here to explore geometry together with you across the desert!`
     }
   ]);
 
@@ -24,13 +24,13 @@ export default function DuneCompanion({
       setHintLevel(nextLvl);
 
       let hintText = '';
-      if (nextLvl === 1) hintText = `💡 Level 1 Hint: ${hintLevel1}`;
-      if (nextLvl === 2) hintText = `💡 Level 2 Hint: ${hintLevel2}`;
-      if (nextLvl === 3) hintText = `💡 Level 3 Hint: ${hintLevel3}`;
+      if (nextLvl === 1) hintText = `💡 Level 1 Clue: ${hintLevel1}`;
+      if (nextLvl === 2) hintText = `🔍 Level 2 Hint: ${hintLevel2}`;
+      if (nextLvl === 3) hintText = `⭐ Level 3 Explorer Guide: ${hintLevel3}`;
 
       setChatLogs(prev => [
         ...prev,
-        { sender: 'dune', text: hintText }
+        { sender: 'luma', text: hintText }
       ]);
     }
   };
@@ -43,68 +43,75 @@ export default function DuneCompanion({
     setChatLogs(prev => [...prev, { sender: 'user', text: query }]);
     setUserQuery('');
 
-    // Generate scaffolded AI pedagogical response (never gives direct answer)
+    // Generate scaffolded AI pedagogical response (Luma never gives direct answers)
     setTimeout(() => {
-      let aiReply = "That is an intriguing mathematical observation! ";
-      if (query.toLowerCase().includes('answer') || query.toLowerCase().includes('what is')) {
-        aiReply += "As your AI companion, I support your thinking rather than simply providing answers. Try experimenting with the virtual protractor or dragging the vertex!";
-      } else if (query.toLowerCase().includes('angle') || query.toLowerCase().includes('sudut')) {
-        aiReply += "Angles measure the amount of turn between two intersecting rays. Look closely at the vertex point V.";
+      let aiReply = "Great exploration thinking! 🌟 ";
+      const qLower = query.toLowerCase();
+
+      if (qLower.includes('answer') || qLower.includes('what is') || qLower.includes('jawapan')) {
+        aiReply += "As your geometry explorer guide, I want to help you discover it yourself! What happens if you try moving the ray or using the virtual protractor?";
+      } else if (qLower.includes('angle') || qLower.includes('sudut')) {
+        aiReply += "An angle is formed when two rays meet at a common vertex point V. Look closely at how wide the opening is!";
+      } else if (qLower.includes('help') || qLower.includes('tolong')) {
+        aiReply += "You're doing fantastic! Click the 'Request Hint' button above so I can give you a friendly clue step-by-step!";
       } else {
-        aiReply += `Consider how ${query} relates to the geometric properties of the structure you are constructing. What changes when you drag the ray?`;
+        aiReply += `I love how you're thinking about "${query}"! Look closely at the geometric clues on screen. What patterns do you notice?`;
       }
 
-      setChatLogs(prev => [...prev, { sender: 'dune', text: aiReply }]);
-    }, 600);
+      setChatLogs(prev => [...prev, { sender: 'luma', text: aiReply }]);
+    }, 500);
   };
 
   return (
-    <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end">
-      {/* Expanded Chat Box */}
+    <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end font-sans">
+      {/* Expanded Chat Window */}
       {isOpen && (
-        <div className="w-80 md:w-96 glass-panel rounded-xl border border-sand-500/40 shadow-2xl mb-3 overflow-hidden flex flex-col h-[450px]">
+        <div className="w-80 md:w-96 desert-card rounded-2xl border-2 border-amber-400/60 shadow-2xl mb-3 overflow-hidden flex flex-col h-[460px] animate-float">
           {/* Header */}
-          <div className="bg-gradient-to-r from-sand-500 to-terracotta-500 p-3 flex justify-between items-center text-desertNavy-950">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-desertNavy-950 flex items-center justify-center text-sand-500">
-                <Bot className="w-5 h-5 text-sand-500" />
+          <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 p-3.5 flex justify-between items-center text-slate-900 shadow-md">
+            <div className="flex items-center gap-2.5">
+              <div className="w-10 h-10 rounded-full bg-amber-100 border-2 border-amber-300 flex items-center justify-center text-amber-800 text-xl font-bold shadow-inner">
+                🤠
               </div>
               <div>
-                <h4 className="font-serif font-bold text-sm tracking-wide">DUNE AI Companion</h4>
-                <p className="text-[10px] text-desertNavy-900 font-medium">Digital Understanding & Navigation Educator</p>
+                <h4 className="font-extrabold text-sm tracking-wide text-slate-950 flex items-center gap-1">
+                  LUMA Explorer
+                  <Sparkles className="w-3.5 h-3.5 text-yellow-200 fill-yellow-200" />
+                </h4>
+                <p className="text-[11px] text-slate-900 font-bold">Your Desert Geometry Guide</p>
               </div>
             </div>
             <button
               onClick={() => setIsOpen(false)}
-              className="text-desertNavy-950 hover:text-white font-bold text-sm px-2"
+              className="w-7 h-7 rounded-full bg-slate-950/20 hover:bg-slate-950/40 text-slate-950 hover:text-white font-extrabold text-sm flex items-center justify-center transition-all"
             >
               ✕
             </button>
           </div>
 
-          {/* Ethics Banner */}
-          <div className="bg-desertNavy-950/90 px-3 py-1.5 border-b border-sand-500/20 text-[10px] text-sand-300 italic flex items-center gap-1">
-            <Sparkles className="w-3 h-3 text-oasis-400 shrink-0" />
-            <span>DUNE supports your thinking. Try the problem first before requesting a hint.</span>
+          {/* Friendly Mindset Banner */}
+          <div className="bg-amber-950/80 px-3 py-1.5 border-b border-amber-500/30 text-[11px] text-amber-200 flex items-center gap-1.5">
+            <Heart className="w-3.5 h-3.5 text-rose-400 fill-rose-400 shrink-0" />
+            <span>Mistakes are proof that you are learning! Ask Luma anything.</span>
           </div>
 
           {/* Chat Stream */}
-          <div className="flex-1 p-3 overflow-y-auto space-y-3 text-xs">
+          <div className="flex-1 p-3 overflow-y-auto space-y-3 text-xs bg-slate-950/40">
             {chatLogs.map((msg, i) => (
               <div
                 key={i}
                 className={`flex gap-2 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
               >
-                {msg.sender === 'dune' && (
-                  <div className="w-6 h-6 rounded-full bg-oasis-500 text-desertNavy-950 flex items-center justify-center shrink-0">
-                    <Bot className="w-3.5 h-3.5" />
+                {msg.sender === 'luma' && (
+                  <div className="w-7 h-7 rounded-full bg-amber-500 border border-amber-300 text-slate-950 flex items-center justify-center font-bold text-sm shrink-0 shadow">
+                    🤠
                   </div>
                 )}
                 <div
-                  className={`p-2.5 rounded-lg max-w-[80%] leading-relaxed ${
+                  className={`p-3 rounded-2xl max-w-[82%] leading-relaxed ${
                     msg.sender === 'user'
-                      ? 'bg-sand-500 text-desertNavy-950 font-medium rounded-br-none'
-                      : 'bg-desertNavy-800 text-sand-100 border border-sand-500/20 rounded-bl-none'
+                      ? 'bg-amber-400 text-slate-950 font-bold rounded-br-none shadow'
+                      : 'bg-slate-800/90 text-amber-50 border border-amber-500/30 rounded-bl-none shadow'
                   }`}
                 >
                   {msg.text}
@@ -113,45 +120,45 @@ export default function DuneCompanion({
             ))}
           </div>
 
-          {/* 3-Level Hint Button Controller */}
-          <div className="p-2 bg-desertNavy-950 border-t border-sand-500/20 space-y-2">
-            <div className="flex justify-between items-center text-[11px] text-sand-300">
-              <span className="flex items-center gap-1 font-semibold">
-                <Lightbulb className="w-3.5 h-3.5 text-sand-500" />
-                Scaffolded Hint System ({hintLevel}/3)
+          {/* 3-Level Hint & Reflection Box */}
+          <div className="p-2.5 bg-slate-900 border-t border-amber-500/30 space-y-2">
+            <div className="flex justify-between items-center text-[11px]">
+              <span className="flex items-center gap-1 font-bold text-amber-300">
+                <Lightbulb className="w-4 h-4 text-yellow-400 fill-yellow-400 animate-pulse" />
+                Luma's Clues ({hintLevel}/3)
               </span>
               <button
                 onClick={requestNextHint}
                 disabled={hintLevel >= 3}
-                className={`px-2 py-1 rounded text-[11px] font-bold border transition-all ${
+                className={`px-3 py-1 rounded-xl text-[11px] font-extrabold transition-all playful-btn ${
                   hintLevel >= 3
-                    ? 'bg-gray-700 text-gray-400 border-gray-600 cursor-not-allowed'
-                    : 'bg-sand-500 text-desertNavy-950 border-sand-400 hover:bg-sand-400'
+                    ? 'bg-slate-800 text-slate-500 border-slate-700 cursor-not-allowed shadow-none'
+                    : 'bg-gradient-to-r from-amber-400 to-orange-400 text-slate-950 hover:from-amber-300 hover:to-orange-300'
                 }`}
               >
-                {hintLevel === 0 ? 'Request Hint 1' : hintLevel === 1 ? 'Request Hint 2' : hintLevel === 2 ? 'Request Hint 3' : 'Max Hints Reached'}
+                {hintLevel === 0 ? '💡 Get Clue 1' : hintLevel === 1 ? '🔍 Get Clue 2' : hintLevel === 2 ? '⭐ Get Clue 3' : 'All Clues Unlocked!'}
               </button>
             </div>
 
             {/* Reflection Prompt */}
-            <div className="text-[10px] bg-desertNavy-900 p-1.5 rounded border border-oasis-500/30 text-oasis-300">
-              <strong>Metacognitive Reflection:</strong> "{reflectionPrompt}"
+            <div className="text-[11px] bg-slate-950/80 p-2 rounded-xl border border-emerald-500/40 text-emerald-300 leading-snug">
+              <strong className="text-emerald-400">🤔 Think About It:</strong> "{reflectionPrompt}"
             </div>
 
-            {/* Custom Question Form */}
-            <form onSubmit={handleSendQuery} className="flex gap-1">
+            {/* Question Form */}
+            <form onSubmit={handleSendQuery} className="flex gap-1.5">
               <input
                 type="text"
-                placeholder="Ask DUNE a question..."
+                placeholder="Ask Luma a question..."
                 value={userQuery}
                 onChange={(e) => setUserQuery(e.target.value)}
-                className="flex-1 bg-desertNavy-800 border border-sand-500/30 rounded px-2.5 py-1 text-xs text-sand-100 focus:outline-none focus:border-sand-500"
+                className="flex-1 bg-slate-950 border border-amber-500/40 rounded-xl px-3 py-1.5 text-xs text-amber-100 placeholder-amber-500/60 focus:outline-none focus:border-amber-400"
               />
               <button
                 type="submit"
-                className="bg-oasis-500 text-desertNavy-950 p-1.5 rounded hover:bg-oasis-400 transition-colors"
+                className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 px-3 py-1.5 rounded-xl font-bold transition-all flex items-center justify-center shadow"
               >
-                <ChevronRight className="w-4 h-4" />
+                <ChevronRight className="w-4 h-4 stroke-[3]" />
               </button>
             </form>
           </div>
@@ -161,13 +168,16 @@ export default function DuneCompanion({
       {/* Floating Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="glass-panel p-3.5 rounded-full border-2 border-sand-500/60 shadow-xl gold-glow hover:scale-105 transition-all flex items-center gap-2 bg-gradient-to-tr from-desertNavy-900 via-desertNavy-800 to-sand-500/20 text-sand-100"
+        className="desert-card-interactive px-4 py-3 rounded-full border-2 border-amber-400/80 shadow-2xl gold-glow hover:scale-105 transition-all flex items-center gap-2.5 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-slate-950 font-black"
       >
-        <div className="relative">
-          <Bot className="w-6 h-6 text-sand-500" />
-          <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-oasis-500 rounded-full animate-ping" />
+        <div className="relative flex items-center justify-center w-8 h-8 rounded-full bg-amber-100 text-lg border border-amber-300 shadow-inner">
+          🤠
+          <span className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-400 rounded-full border-2 border-slate-900 animate-ping" />
         </div>
-        <span className="font-serif text-xs font-bold hidden sm:inline-block pr-1">DUNE AI</span>
+        <div className="text-left hidden sm:block">
+          <div className="text-xs font-black tracking-wide text-slate-950 leading-none">LUMA EXPLORER</div>
+          <div className="text-[10px] text-slate-900 font-bold leading-none mt-0.5">Click for Clues & Help!</div>
+        </div>
       </button>
     </div>
   );
