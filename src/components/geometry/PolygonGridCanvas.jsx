@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Grid, Hexagon, RefreshCw, CheckCircle2 } from 'lucide-react';
+import { Grid, Hexagon, RefreshCw, CheckCircle2, Sparkles } from 'lucide-react';
 
 export default function PolygonGridCanvas({
   onPolygonChange = () => {},
@@ -118,41 +118,37 @@ export default function PolygonGridCanvas({
     : '';
 
   return (
-    <div className="bg-desertNavy-900/90 rounded-xl p-4 border border-sand-500/30 shadow-xl flex flex-col items-center">
+    <div className="glass-panel rounded-2xl p-4 border-2 border-sand-500/40 shadow-2xl flex flex-col items-center bg-gradient-to-b from-desertNavy-900 to-desertNavy-950">
       {/* Controls Header */}
       <div className="w-full flex flex-wrap justify-between items-center gap-2 mb-3">
         <div className="flex items-center gap-2">
-          <label className="text-xs text-sand-300 font-semibold">Grid Type:</label>
+          <span className="text-xs text-sand-300 font-bold uppercase">Grid:</span>
           <button
             onClick={() => setGridType('square')}
-            className={`px-3 py-1 rounded text-xs font-semibold flex items-center gap-1.5 border transition-all ${
-              gridType === 'square'
-                ? 'bg-sand-500 text-desertNavy-950 border-sand-400 font-bold'
-                : 'bg-desertNavy-800 text-sand-300 border-sand-500/30'
+            className={`btn-playful px-3 py-1 text-xs ${
+              gridType === 'square' ? 'btn-gold' : 'bg-desertNavy-800 text-sand-300 border-sand-500/30'
             }`}
           >
             <Grid className="w-3.5 h-3.5" />
-            Grid Segi Empat Sama
+            <span>Grid Segi Empat</span>
           </button>
           <button
             onClick={() => setGridType('isometric')}
-            className={`px-3 py-1 rounded text-xs font-semibold flex items-center gap-1.5 border transition-all ${
-              gridType === 'isometric'
-                ? 'bg-oasis-500 text-desertNavy-950 border-oasis-400 font-bold'
-                : 'bg-desertNavy-800 text-sand-300 border-sand-500/30'
+            className={`btn-playful px-3 py-1 text-xs ${
+              gridType === 'isometric' ? 'btn-oasis' : 'bg-desertNavy-800 text-sand-300 border-sand-500/30'
             }`}
           >
             <Hexagon className="w-3.5 h-3.5" />
-            Grid Segi Tiga Sama Sisi
+            <span>Grid Segi Tiga</span>
           </button>
         </div>
 
         <div className="flex items-center gap-2">
-          <label className="text-xs text-sand-300 font-semibold">Bilangan Sisi (Sides):</label>
+          <label className="text-xs text-sand-300 font-bold uppercase">Sisi (Sides):</label>
           <select
             value={sides}
             onChange={(e) => setSides(parseInt(e.target.value, 10))}
-            className="bg-desertNavy-950 text-sand-100 border border-sand-500/30 px-3 py-1 rounded text-xs font-bold"
+            className="bg-desertNavy-950 text-sand-100 border-2 border-sand-500/40 px-3 py-1 rounded-full text-xs font-bold focus:outline-none"
           >
             {[3, 4, 5, 6, 7, 8].map((n) => (
               <option key={n} value={n}>
@@ -162,20 +158,20 @@ export default function PolygonGridCanvas({
           </select>
           <button
             onClick={() => generateRegularPolygon(sides)}
-            className="p-1.5 rounded bg-desertNavy-800 text-sand-300 border border-sand-500/30 hover:text-sand-100"
+            className="p-1.5 rounded-full bg-desertNavy-800 text-sand-300 border border-sand-500/40 hover:text-white"
             title="Reset to Regular Polygon"
           >
-            <RefreshCw className="w-4 h-4" />
+            <RefreshCw className="w-4 h-4 text-amber-400" />
           </button>
         </div>
       </div>
 
       {/* SVG Canvas */}
-      <div className="relative border border-sand-500/20 rounded-lg bg-desertNavy-950 overflow-hidden w-full max-w-[500px]">
+      <div className="relative border-2 border-sand-500/30 rounded-xl bg-desertNavy-950 overflow-hidden w-full max-w-[500px] shadow-inner">
         <svg
           ref={canvasRef}
           viewBox="0 0 500 360"
-          className="w-full h-auto"
+          className="w-full h-auto touch-none"
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
           onPointerLeave={handlePointerUp}
@@ -183,10 +179,10 @@ export default function PolygonGridCanvas({
           {/* Grid Background */}
           <defs>
             <pattern id="squareGrid" width="20" height="20" patternUnits="userSpaceOnUse">
-              <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(212, 175, 55, 0.1)" strokeWidth="1" />
+              <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(212, 175, 55, 0.15)" strokeWidth="1" />
             </pattern>
             <pattern id="isometricGrid" width="25" height="43.3" patternUnits="userSpaceOnUse">
-              <path d="M 0 21.65 L 12.5 0 L 25 21.65 L 12.5 43.3 Z M 12.5 0 L 12.5 43.3 M 0 21.65 L 25 21.65" fill="none" stroke="rgba(0, 168, 150, 0.12)" strokeWidth="1" />
+              <path d="M 0 21.65 L 12.5 0 L 25 21.65 L 12.5 43.3 Z M 12.5 0 L 12.5 43.3 M 0 21.65 L 25 21.65" fill="none" stroke="rgba(0, 168, 150, 0.18)" strokeWidth="1" />
             </pattern>
           </defs>
           <rect width="500" height="360" fill={gridType === 'square' ? "url(#squareGrid)" : "url(#isometricGrid)"} />
@@ -195,9 +191,9 @@ export default function PolygonGridCanvas({
           {polygonPath && (
             <path
               d={polygonPath}
-              fill="rgba(212, 175, 55, 0.15)"
-              stroke="#D4AF37"
-              strokeWidth="3"
+              fill="rgba(255, 209, 102, 0.2)"
+              stroke="#FFD166"
+              strokeWidth="3.5"
               strokeLinejoin="round"
             />
           )}
@@ -209,19 +205,19 @@ export default function PolygonGridCanvas({
               <circle
                 cx={v.x}
                 cy={v.y}
-                r="10"
-                fill="#C85A32"
+                r="11"
+                fill="#FF6B6B"
                 stroke="#FFFFFF"
                 strokeWidth="2.5"
                 onPointerDown={(e) => handlePointerDown(i, e)}
-                className="cursor-grab hover:scale-125 transition-transform"
+                className="cursor-grab hover:scale-125 transition-transform gold-glow"
               />
               <text
                 x={v.x}
                 y={v.y + 4}
                 fill="#FFFFFF"
                 fontSize="11"
-                fontWeight="bold"
+                fontWeight="extrabold"
                 textAnchor="middle"
                 pointerEvents="none"
               >
@@ -230,13 +226,13 @@ export default function PolygonGridCanvas({
 
               {/* Interior Angle Label near Vertex */}
               <text
-                x={v.x + (v.x > center.x ? 18 : -18)}
-                y={v.y + (v.y > center.y ? 18 : -18)}
+                x={v.x + (v.x > center.x ? 20 : -20)}
+                y={v.y + (v.y > center.y ? 20 : -20)}
                 fill="#80E0D6"
-                fontSize="11"
-                fontWeight="bold"
+                fontSize="12"
+                fontWeight="extrabold"
                 textAnchor="middle"
-                className="drop-shadow"
+                className="drop-shadow-md"
               >
                 {angles[i] || 0}°
               </text>
@@ -246,28 +242,28 @@ export default function PolygonGridCanvas({
       </div>
 
       {/* Interior Angles Breakdown Table */}
-      <div className="w-full mt-3 p-3 bg-desertNavy-800/90 rounded-lg border border-sand-500/30">
+      <div className="w-full mt-3 p-3 bg-desertNavy-800/90 rounded-xl border border-sand-500/30">
         <div className="flex justify-between items-center mb-2">
-          <span className="text-xs text-sand-300 font-bold uppercase tracking-wider">
+          <span className="text-xs text-sand-300 font-extrabold uppercase tracking-wider">
             Sudut Pedalaman ({sides} Sisi Poligon)
           </span>
-          <div className="flex items-center gap-1 text-xs text-oasis-300 font-semibold">
-            <CheckCircle2 className="w-4 h-4 text-oasis-400" />
+          <div className="flex items-center gap-1 text-xs text-teal-300 font-bold">
+            <CheckCircle2 className="w-4 h-4 text-teal-400" />
             <span>Formula: (n-2) × 180° = {expectedSum}°</span>
           </div>
         </div>
 
         <div className="grid grid-cols-4 sm:grid-cols-8 gap-1 text-center font-mono text-xs">
           {angles.map((a, i) => (
-            <div key={i} className="bg-desertNavy-950 p-1.5 rounded border border-sand-500/20">
-              <div className="text-[10px] text-sand-400">{vertices[i]?.label}</div>
-              <div className="text-sand-100 font-bold">{a}°</div>
+            <div key={i} className="bg-desertNavy-950 p-1.5 rounded-lg border border-sand-500/30">
+              <div className="text-[10px] text-amber-400 font-bold">{vertices[i]?.label}</div>
+              <div className="text-sand-100 font-extrabold">{a}°</div>
             </div>
           ))}
         </div>
 
-        <div className="mt-2 text-right text-xs font-semibold text-sand-200">
-          Jumlah Sudut Pedalaman Measured: <span className="text-sand-500 font-mono text-sm">{totalInteriorSum}°</span>
+        <div className="mt-2 text-right text-xs font-bold text-sand-200">
+          Jumlah Sudut Pedalaman Measured: <span className="text-amber-400 font-mono text-sm">{totalInteriorSum}°</span>
         </div>
       </div>
     </div>

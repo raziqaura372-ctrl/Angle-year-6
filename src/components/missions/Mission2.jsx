@@ -1,16 +1,21 @@
 import React, { useState } from 'react';
 import DynamicAngleCanvas from '../geometry/DynamicAngleCanvas';
 import FormativeFeedback from '../ai/FormativeFeedback';
+import LumaGuide from '../character/LumaGuide';
 import { useGame } from '../../context/GameContext';
-import { Target, Compass } from 'lucide-react';
+import { Target, Compass, ArrowRight } from 'lucide-react';
+import confetti from 'canvas-confetti';
 
 export default function Mission2({ onComplete }) {
-  const [angle, setAngle] = useState(45);
+  const [angle, setAngle] = useState(75);
   const targetAngle = 135; // Target angle to locate the oasis spring
   const [completed, setCompleted] = useState(false);
   const { completeMission } = useGame();
 
   const handleSuccess = () => {
+    try {
+      confetti({ particleCount: 90, spread: 70, origin: { y: 0.6 } });
+    } catch (e) {}
     setCompleted(true);
     completeMission(2, 100, 3);
     if (onComplete) onComplete();
@@ -18,20 +23,14 @@ export default function Mission2({ onComplete }) {
 
   return (
     <div className="space-y-6">
-      <div className="glass-panel p-6 rounded-xl border border-sand-500/30">
-        <div className="flex items-center gap-3 mb-2">
-          <div className="w-10 h-10 rounded-full bg-sand-500/20 flex items-center justify-center text-sand-500">
-            <Compass className="w-6 h-6" />
-          </div>
-          <div>
-            <h2 className="font-serif text-2xl font-bold text-sand-100">MISSION 2 – THE OASIS COMPASS</h2>
-            <p className="text-sand-300 text-xs">Precision Angle Measurement with Virtual Protractor</p>
-          </div>
-        </div>
-        <p className="text-sand-200 text-sm leading-relaxed mt-2">
-          An ancient desert compass directs travelers toward hidden water springs. The compass bearing requires measuring an angle of exactly <strong>{targetAngle}°</strong> using the virtual protractor overlay. Toggle and snap the protractor to verify your alignment!
-        </p>
-      </div>
+      <LumaGuide
+        mood={completed ? 'celebrating' : 'happy'}
+        title="Stage 2: The Oasis Compass"
+        message={`Explorer Luma discovered the ancient Oasis Compass! The spring water source lies along a compass bearing of exactly ${targetAngle}°. Use the virtual protractor tool to measure the precise turn!`}
+        hint="Click 'Virtual Protractor' to display the tool, then snap it to Vertex V. Align the baseline with Ray 1 and measure counter-clockwise to 135°."
+        whyPrompt="How does placing the protractor center directly over Vertex V help us get an accurate measurement?"
+        showCelebration={completed}
+      />
 
       <DynamicAngleCanvas
         label="Oasis Compass Bearing Alignment"

@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import DynamicAngleCanvas from '../geometry/DynamicAngleCanvas';
 import FormativeFeedback from '../ai/FormativeFeedback';
+import LumaGuide from '../character/LumaGuide';
 import { useGame } from '../../context/GameContext';
-import { Mountain, CheckCircle, HelpCircle } from 'lucide-react';
+import { Mountain, CheckCircle, ArrowRight } from 'lucide-react';
+import confetti from 'canvas-confetti';
 
 export default function Mission1({ onComplete }) {
-  const [angle, setAngle] = useState(30);
+  const [angle, setAngle] = useState(120);
   const [selectedType, setSelectedType] = useState(null);
-  const [score, setScore] = useState(0);
   const [completed, setCompleted] = useState(false);
   const { completeMission } = useGame();
 
@@ -22,7 +23,9 @@ export default function Mission1({ onComplete }) {
     setSelectedType(type);
     const actual = classifyAngle(angle);
     if (type === actual) {
-      setScore(100);
+      try {
+        confetti({ particleCount: 90, spread: 70, origin: { y: 0.6 } });
+      } catch (e) {}
       setCompleted(true);
       completeMission(1, 100, 3);
     }
@@ -30,23 +33,17 @@ export default function Mission1({ onComplete }) {
 
   return (
     <div className="space-y-6">
-      <div className="glass-panel p-6 rounded-xl border border-sand-500/30">
-        <div className="flex items-center gap-3 mb-2">
-          <div className="w-10 h-10 rounded-full bg-sand-500/20 flex items-center justify-center text-sand-500">
-            <Mountain className="w-6 h-6" />
-          </div>
-          <div>
-            <h2 className="font-serif text-2xl font-bold text-sand-100">MISSION 1 – THE DUNE OF ANGLES</h2>
-            <p className="text-sand-300 text-xs">Discover & Classify Angle Types in Sand Dune Formations</p>
-          </div>
-        </div>
-        <p className="text-sand-200 text-sm leading-relaxed mt-2">
-          As winds shift across the dunes, sand slopes form distinct angles. Adjust the angle below and classify it according to Malay / English DSKP terminology: <strong>Sudut Tirus (&lt;90°)</strong>, <strong>Sudut Tegak (=90°)</strong>, <strong>Sudut Cakah (&gt;90°)</strong>, or <strong>Sudut Lurus (=180°)</strong>.
-        </p>
-      </div>
+      <LumaGuide
+        mood={completed ? 'celebrating' : selectedType && selectedType !== classifyAngle(angle) ? 'thinking' : 'happy'}
+        title="Stage 1: Dune of Angles"
+        message="Explorer Luma has reached the giant wind-swept sand dune! Sand dunes form different angle slopes. Can you identify whether this angle is Sudut Tirus (<90°), Sudut Tegak (=90°), Sudut Cakah (>90°), or Sudut Lurus (=180°)?"
+        hint="Acute (Tirus) is smaller than 90°. Right (Tegak) is exactly 90°. Obtuse (Cakah) is between 90° and 180°!"
+        whyPrompt="What happens to the angle category when you pass 90°?"
+        showCelebration={completed}
+      />
 
       <DynamicAngleCanvas
-        label="Dune Slope Simulator"
+        label="Dune Slope Angle Simulator"
         onAngleChange={(a) => {
           setAngle(a);
           setSelectedType(null);
@@ -54,9 +51,10 @@ export default function Mission1({ onComplete }) {
         initialAngle={120}
       />
 
-      <div className="glass-panel p-5 rounded-xl border border-sand-500/30 space-y-4">
-        <h3 className="font-serif text-base font-bold text-sand-200">
-          Classify Current Dune Angle ({angle}°):
+      <div className="glass-panel p-5 rounded-2xl border-2 border-sand-500/40 space-y-4 bg-desertNavy-900/90">
+        <h3 className="font-serif text-base md:text-lg font-extrabold text-sand-100 flex items-center justify-between">
+          <span>CLASSIFY DUNE SLOPE ANGLE ({angle}°):</span>
+          <span className="text-xs text-amber-400 font-mono">DSKP 6.1.1</span>
         </h3>
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -69,16 +67,16 @@ export default function Mission1({ onComplete }) {
             <button
               key={item.id}
               onClick={() => handleCheckClassification(item.id)}
-              className={`p-3 rounded-lg border text-left transition-all ${
+              className={`p-3.5 rounded-xl border-2 text-left transition-all btn-playful ${
                 selectedType === item.id
                   ? classifyAngle(angle) === item.id
-                    ? 'bg-oasis-500 text-desertNavy-950 border-oasis-400 font-bold'
-                    : 'bg-terracotta-500 text-white border-terracotta-400'
-                  : 'bg-desertNavy-800 text-sand-200 border-sand-500/30 hover:border-sand-500'
+                    ? 'btn-oasis border-emerald-300'
+                    : 'bg-amber-800 text-sand-100 border-amber-400'
+                  : 'bg-desertNavy-950 text-sand-200 border-sand-500/30 hover:border-amber-400'
               }`}
             >
-              <div className="text-sm font-bold">{item.label}</div>
-              <div className="text-[11px] opacity-80">{item.desc}</div>
+              <div className="text-sm font-extrabold">{item.label}</div>
+              <div className="text-[11px] opacity-90 font-medium">{item.desc}</div>
             </button>
           ))}
         </div>
@@ -87,22 +85,23 @@ export default function Mission1({ onComplete }) {
           <FormativeFeedback
             customMessage={
               selectedType === classifyAngle(angle)
-                ? `Correct! ${angle}° is indeed a ${classifyAngle(angle).toUpperCase()} angle. DSKP 6.1 mastery confirmed!`
-                : `Not quite. ${angle}° does not belong to ${selectedType.toUpperCase()}. Check the angle boundaries!`
+                ? `Excellent discovery, Explorer! ${angle}° is indeed a ${classifyAngle(angle).toUpperCase()} angle. You earned the Angle Tracker badge!`
+                : `Not quite, explorer! Let's investigate: ${angle}° is between 90° and 180°. Try reviewing the angle boundaries!`
             }
           />
         )}
       </div>
 
       {completed && (
-        <div className="p-4 bg-oasis-900/60 rounded-xl border border-oasis-500 text-center space-y-3">
-          <h3 className="font-serif text-lg font-bold text-oasis-300">Mission 1 Completed! Badge Unlocked: Angle Tracker</h3>
+        <div className="p-5 bg-emerald-950/80 rounded-2xl border-2 border-emerald-400 text-center space-y-3 gold-glow">
+          <h3 className="font-serif text-xl font-extrabold text-emerald-300">Badge Unlocked: Angle Tracker 🏅</h3>
           {onComplete && (
             <button
               onClick={onComplete}
-              className="px-6 py-2.5 rounded-lg bg-gradient-to-r from-sand-500 to-terracotta-500 text-desertNavy-950 font-bold text-sm gold-glow hover:scale-105 transition-transform"
+              className="btn-playful btn-gold px-6 py-2.5 text-sm"
             >
-              Proceed to Mission 2: The Oasis Compass
+              <span>PROCEED TO OASIS COMPASS</span>
+              <ArrowRight className="w-4 h-4" />
             </button>
           )}
         </div>

@@ -1,16 +1,21 @@
 import React, { useState } from 'react';
 import DynamicAngleCanvas from '../geometry/DynamicAngleCanvas';
 import FormativeFeedback from '../ai/FormativeFeedback';
+import LumaGuide from '../character/LumaGuide';
 import { useGame } from '../../context/GameContext';
-import { MapPin, Navigation } from 'lucide-react';
+import { Navigation, MapPin, ArrowRight } from 'lucide-react';
+import confetti from 'canvas-confetti';
 
 export default function Mission5({ onComplete }) {
-  const [currentTurnAngle, setCurrentTurnAngle] = useState(45);
+  const [currentTurnAngle, setCurrentTurnAngle] = useState(90);
   const targetTurn = 150; // Turning angle to bypass sandstorm ridge
   const [completed, setCompleted] = useState(false);
   const { completeMission } = useGame();
 
   const handleSuccess = () => {
+    try {
+      confetti({ particleCount: 90, spread: 70, origin: { y: 0.6 } });
+    } catch (e) {}
     setCompleted(true);
     completeMission(5, 100, 3);
     if (onComplete) onComplete();
@@ -18,20 +23,14 @@ export default function Mission5({ onComplete }) {
 
   return (
     <div className="space-y-6">
-      <div className="glass-panel p-6 rounded-xl border border-sand-500/30">
-        <div className="flex items-center gap-3 mb-2">
-          <div className="w-10 h-10 rounded-full bg-sand-500/20 flex items-center justify-center text-sand-500">
-            <Navigation className="w-6 h-6" />
-          </div>
-          <div>
-            <h2 className="font-serif text-2xl font-bold text-sand-100">MISSION 5 – THE LOST DESERT MAP</h2>
-            <p className="text-sand-300 text-xs">Caravan Navigation with Course Turn Angles</p>
-          </div>
-        </div>
-        <p className="text-sand-200 text-sm leading-relaxed mt-2">
-          A severe sandstorm approaches from the north! To guide the desert caravan safely around the shifting dunes toward the northern ridge, calculate and adjust the caravan trajectory turn angle to exactly <strong>{targetTurn}°</strong>.
-        </p>
-      </div>
+      <LumaGuide
+        mood={completed ? 'celebrating' : 'happy'}
+        title="Stage 5: The Lost Desert Map"
+        message={`A desert sandstorm is brewing from the north! Explorer Luma must guide the caravan along a turn course angle of exactly ${targetTurn}° to safely bypass the shifting sand dunes.`}
+        hint="Rotate the coral trajectory ray until the degree readout matches 150°."
+        whyPrompt="How does changing a navigation turn angle affect the final waypoint location on a map?"
+        showCelebration={completed}
+      />
 
       <DynamicAngleCanvas
         label="Caravan Waypoint Trajectory Angle"
