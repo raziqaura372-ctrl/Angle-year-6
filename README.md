@@ -1,45 +1,60 @@
-# DESERT GEOMETRY EXPEDITION: THE QUEST FOR THE HIDDEN OASIS
-## Interactive Digital Mathematics Learning Resource (MTES6032 Task 2)
+# 🤖⚡ Tech City Angle Quest
+## Interactive Digital Mathematics Web Game (Malaysian DSKP Year 6 Mathematics • Space 6.1 Angles)
 
-### Overview
-**Desert Geometry Expedition** is an academically defensible, university-grade interactive digital mathematics resource designed for Primary Mathematics Education (**SUKATAN DAN GEOMETRI - 6.1 Sudut / DSKP 6.1.1 & 6.1.2**).
-
-Built for **MTES6032: Technology in Teaching and Learning Mathematics**, this platform shifts learning from instrumental rote memorization to deep relational understanding through dynamic geometry manipulation, scaffolded AI feedback, and cinematic narrative gamification.
+Welcome to **Tech City Angle Quest**, a fun, vibrant, colorful single-page offline web game built specifically for Year 6 primary school pupils (age 12) to master angles and regular polygons!
 
 ---
 
-### Core Curriculum Alignment (DSKP Basis)
-- **Standard Kandungan:** 6.1 Sudut
-- **Standard Pembelajaran 6.1.1:** Melukis bentuk poligon serta hingga 8 sisi pada grid segi empat sama, grid segi tiga sama sisi atau perisian komputer dan mengukur sudut pedalaman yang terbentuk.
-- **Standard Pembelajaran 6.1.2:** Membentuk sudut berdasarkan nilai sudut yang diberi.
+### 📚 Curriculum Mapping (Malaysian DSKP Year 6 Mathematics)
+- **Content Standard:** 6.1 Sudut (Angles & Polygons)
+- **Learning Standard 6.1.1:** Regular polygons with up to eight sides drawn on a square grid or triangular grid, and measuring their interior angles.
+- **Learning Standard 6.1.2:** Constructing angles based on given angle values.
+- **Mathematical Rules Applied:**
+  - Angles up to **180° ONLY** (no reflex angles used anywhere).
+  - Accurate regular polygon interior angle values:
+    - Equilateral Triangle (3 sides) = **60°**
+    - Square (4 sides) = **90°**
+    - Regular Pentagon (5 sides) = **108°**
+    - Regular Hexagon (6 sides) = **120°**
+    - Regular Heptagon (7 sides) ≈ **128.6°**
+    - Regular Octagon (8 sides) = **135°**
 
 ---
 
-### Key Technical & Pedagogical Features
-1. **Dynamic Geometry Manipulator Engine:** Custom canvas with real-time degree measurement, vertex dragging, ray rotation, and draggable virtual protractor.
-2. **Polygon Grid Explorer:** Supports 3 to 8-sided polygons on Square and Isometric Triangular Grids with interior angle sum verification `(n-2) × 180°`.
-3. **GeoGebra Web Integration:** Embedded dynamic geometry construction environment.
-4. **DUNE AI Companion (Digital Understanding & Navigation Educator):** A 3-level scaffolded hint system preserving student agency.
-5. **Diagnostic Formative Feedback:** Provides actionable, pedagogically scaffolded feedback rather than binary correct/wrong prompts.
-6. **Teacher Dashboard:** Real-time progress analytics, difficulty level overrides (Guided, Standard, Challenge), and JSON export.
-7. **NPDL / KPPB 6Cs Hub:** Full academic documentation mapping 6Cs competencies, assessment blueprints, APA 7 references, and 30-minute micro-teaching plans.
+### 🎮 Game Features & Structure
+- **Mascot Guide:** Gizmo the Tech Robot 🤖 accompanies learners on every screen with speech bubbles, hints, and encouraging feedback ("Nice try, let's fix the glitch!").
+- **9 Kawaii Tech Characters:** Cute smiling inline SVG characters including Robot, Drone, Smartphone, Rocket, Satellite, Laptop, VR Headset, Electric Car, and Smartwatch.
+- **6 Progression Levels + Mega Glitch Boss Battle:**
+  1. **Robot Factory (Polygons):** Match regular polygon pictures (3 to 8 sides) to names, side counts, and interior angles.
+  2. **Smartphone Screen (Angle Types):** Sort tech angles into Acute (<90°), Right (90°), Obtuse (90°-180°), and Straight (180°).
+  3. **Drone Pilot (Measuring Angles):** Interactive virtual protractor with dual scales (inner & outer 0°–180°).
+  4. **Code Builder (Constructing Angles):** Drag angle arm to construct target angles within ±3° accuracy.
+  5. **Satellite Grid (Polygons on a Grid):** Plot vertices on Square or Isometric Triangular grids and answer interior angle questions.
+  6. **Spot the Glitch (Error Detection):** Identify common protractor reading bugs (scale confusion, origin offset) and repair them.
+  7. **Boss Battle (Mega Glitch Robot):** Rapid-fire mixed questions from all levels to defeat the boss!
+- **Classroom Team Mode:** 1 to 4 teams take turns on 1 device/projector with a live team scoreboard!
+- **Teacher Panel:** Toggle game timer on/off, change difficulty, unlock all levels, or reset progress.
+- **Web Audio API Synth & Confetti:** Sound effects (clicks, chimes, glitch sounds, victory fanfare) generated dynamically without external sound files. Standalone particle confetti animation on victory.
+- **100% Offline Capable:** Pure HTML5, CSS3, and JavaScript (`index.html`, `style.css`, `game.js`). No frameworks or external internet dependencies required.
 
 ---
 
-### Quick Setup & Installation
-```bash
-# Clone and install dependencies
-npm install
+### 🚀 How to Run the Game
+1. **Direct Browser Open (Simplest):**
+   - Simply double-click `index.html` or drag and drop `index.html` into any modern web browser (Google Chrome, Microsoft Edge, Mozilla Firefox, Safari).
+2. **Local Web Server (Optional):**
+   ```bash
+   # Using Python 3 HTTP Server
+   python3 -m http.server 8000
 
-# Launch local development server
-npm run dev
-
-# Produce production build
-npm run build
-```
+   # Or using Vite / Node
+   npm run dev
+   ```
+   Then open `http://localhost:8000` in your web browser.
 
 ---
 
-### Author & Academic Declaration
-Designed and developed for **MTES6032 Task 2: Production of Digital Resources**.
-All AI elements adhere strictly to ethical guidelines and scaffolded pedagogical principles.
+### 📁 Codebase Structure
+- `index.html` - Single page structure, top header stats bar, mascot guide banner, level screens, SVG symbol defs.
+- `style.css` - Kawaii rainbow aesthetics, rounded touch-friendly buttons, keyframe animations, responsive grid layouts.
+- `game.js` - Engine state manager, Web Audio API sound synthesizer, virtual protractor, grid engine, levels 1-6 logic, boss battle, and team mode.
