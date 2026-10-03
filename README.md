@@ -1,45 +1,69 @@
-# DESERT GEOMETRY EXPEDITION: THE QUEST FOR THE HIDDEN OASIS
-## Interactive Digital Mathematics Learning Resource (MTES6032 Task 2)
+# Angle Explorer Lab 🧪✨
+## Interactive Digital Mathematics Exploration Activity for Year 6 Pupils (Age 12)
 
 ### Overview
-**Desert Geometry Expedition** is an academically defensible, university-grade interactive digital mathematics resource designed for Primary Mathematics Education (**SUKATAN DAN GEOMETRI - 6.1 Sudut / DSKP 6.1.1 & 6.1.2**).
+**Angle Explorer Lab** is an offline, interactive single-page web app designed for Year 6 primary school pupils based on the Malaysian DSKP Mathematics curriculum (Space: 6.1 Angles).
 
-Built for **MTES6032: Technology in Teaching and Learning Mathematics**, this platform shifts learning from instrumental rote memorization to deep relational understanding through dynamic geometry manipulation, scaffolded AI feedback, and cinematic narrative gamification.
-
----
-
-### Core Curriculum Alignment (DSKP Basis)
-- **Standard Kandungan:** 6.1 Sudut
-- **Standard Pembelajaran 6.1.1:** Melukis bentuk poligon serta hingga 8 sisi pada grid segi empat sama, grid segi tiga sama sisi atau perisian komputer dan mengukur sudut pedalaman yang terbentuk.
-- **Standard Pembelajaran 6.1.2:** Membentuk sudut berdasarkan nilai sudut yang diberi.
+It focuses purely on free exploration—no scores, no lives, no timers, and no right/wrong penalties. Pupils drag handles, observe angle transformations, and explain what changes alongside Professor Beep, a friendly cartoon robot scientist mascot.
 
 ---
 
-### Key Technical & Pedagogical Features
-1. **Dynamic Geometry Manipulator Engine:** Custom canvas with real-time degree measurement, vertex dragging, ray rotation, and draggable virtual protractor.
-2. **Polygon Grid Explorer:** Supports 3 to 8-sided polygons on Square and Isometric Triangular Grids with interior angle sum verification `(n-2) × 180°`.
-3. **GeoGebra Web Integration:** Embedded dynamic geometry construction environment.
-4. **DUNE AI Companion (Digital Understanding & Navigation Educator):** A 3-level scaffolded hint system preserving student agency.
-5. **Diagnostic Formative Feedback:** Provides actionable, pedagogically scaffolded feedback rather than binary correct/wrong prompts.
-6. **Teacher Dashboard:** Real-time progress analytics, difficulty level overrides (Guided, Standard, Challenge), and JSON export.
-7. **NPDL / KPPB 6Cs Hub:** Full academic documentation mapping 6Cs competencies, assessment blueprints, APA 7 references, and 30-minute micro-teaching plans.
+### Key Features
+
+1. **Dark Navy Theme (`#1B2A41`)**: Designed specifically for seamless embedding inside dark Notion pages via `<iframe>`.
+2. **Fully Responsive Layout**: Fits smoothly from 360px wide smartphones to 1200px desktop displays with touch-friendly controls.
+3. **Kawaii Visual Style**: Vibrant rainbow accents, soft card shadows, sparkles, pulse animations, and cartoon mascot speech bubbles.
+4. **Web Audio API Synthesizer**: Custom sound effects (pops, snaps, celebrations) with a dedicated sound toggle button (muted by default).
+5. **Three Interactive Exploration Zones**:
+   - 📐 **Zone 1: Angle Playground**:
+     - Interactive 0°–180° angle dragging with pointer events.
+     - Auto angle classification: Acute (green), Right angle (blue with 90° square mark), Obtuse (orange), Straight line (purple).
+     - Gentle snapping at 30°, 45°, 60°, 90°, 120°, 180° with sparkle particle effects.
+     - Virtual dual-scale protractor overlay toggle.
+     - "Estimate first" mode to guess angle sizes with difference display.
+   - 🛑 **Zone 2: Polygon Lab**:
+     - Regular polygons with 3 to 8 sides (triangle, square, pentagon, hexagon, heptagon, octagon).
+     - Interior angle measurement arcs (60°, 90°, 108°, 120°, ~129°, 135°).
+     - Toggle to show all interior angle arcs at once.
+     - Toggle background between Square Grid and Isometric Triangular Grid.
+   - 🎯 **Zone 3: Construct Studio**:
+     - Target angle builder (35°, 60°, 110°, 150° presets + custom input).
+     - Drag ray baseline construction with virtual ruler overlay.
+     - Live proximity bar ("You are X° away") and confetti celebration when within 2°.
+6. **Reflection Prompts ("Think & Explain")**:
+   - Rotating prompt cards asking open-ended questions in every zone.
+   - Student idea text box with "Share my idea" speech bubble display (no data sent or saved).
 
 ---
 
-### Quick Setup & Installation
-```bash
-# Clone and install dependencies
-npm install
+### How to Run Locally
 
-# Launch local development server
-npm run dev
+Because the application is built using plain HTML5, CSS3, and Vanilla JavaScript with **zero external image or library dependencies**, running it is instant and offline-ready:
 
-# Produce production build
-npm run build
-```
+1. Double-click `index.html` or open it in any web browser (Chrome, Safari, Firefox, Edge).
+2. Alternatively, run a simple local web server:
+   ```bash
+   npx serve .
+   # or
+   python3 -m http.server 8000
+   ```
 
 ---
 
-### Author & Academic Declaration
-Designed and developed for **MTES6032 Task 2: Production of Digital Resources**.
-All AI elements adhere strictly to ethical guidelines and scaffolded pedagogical principles.
+### Hosting on GitHub Pages
+
+To publish the app online for free using GitHub Pages:
+
+1. Push this repository to GitHub.
+2. In your repository settings, go to **Settings** > **Pages**.
+3. Under **Build and deployment**, set **Source** to `Deploy from a branch`.
+4. Select the `main` branch and `/ (root)` folder, then click **Save**.
+5. Your app will be published live at `https://<username>.github.io/<repository-name>/`.
+
+---
+
+### How to Embed in Notion
+
+1. In Notion, type `/iframe` or `/embed` on any page.
+2. Paste your GitHub Pages live web URL (or hosted URL).
+3. Resize the iframe box as needed. The dark navy background (`#1B2A41`) will blend seamlessly into Notion's dark mode.

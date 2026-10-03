@@ -1,13 +1,252 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>app</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Angle Explorer Lab 🧪✨</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-title">
+        <span class="lab-badge">DSKP Year 6 Math</span>
+        <h1>Angle Explorer Lab 🧪✨</h1>
+      </div>
+      <div class="header-controls">
+        <button id="sound-toggle-btn" class="btn btn-secondary sound-btn" aria-label="Toggle Sound">
+          <span id="sound-icon">🔈</span> <span id="sound-label">Sound: OFF</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Mascot & Companion Banner -->
+    <section class="mascot-banner">
+      <div class="mascot-avatar" id="mascot-svg-container">
+        <!-- Inline SVG Robot Scientist will be dynamically rendered or embedded here -->
+      </div>
+      <div class="speech-bubble-container">
+        <div class="speech-bubble" id="mascot-speech">
+          Hello young explorer! 👋 I'm Professor Beep! Pick a zone below to explore angles! 📐✨
+        </div>
+      </div>
+    </section>
+
+    <!-- Zone Navigation Tabs -->
+    <nav class="zone-tabs" role="tablist">
+      <button class="tab-btn active" data-zone="playground" id="tab-playground" role="tab" aria-selected="true">
+        <span class="tab-icon">📐</span>
+        <span class="tab-label">Angle Playground</span>
+      </button>
+      <button class="tab-btn" data-zone="polygon" id="tab-polygon" role="tab" aria-selected="false">
+        <span class="tab-icon">🛑</span>
+        <span class="tab-label">Polygon Lab</span>
+      </button>
+      <button class="tab-btn" data-zone="construct" id="tab-construct" role="tab" aria-selected="false">
+        <span class="tab-icon">🎯</span>
+        <span class="tab-label">Construct Studio</span>
+      </button>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="lab-workspace">
+
+      <!-- ZONE 1: Angle Playground -->
+      <section id="zone-playground" class="zone-content active">
+        <div class="zone-header">
+          <h2>📐 Angle Playground</h2>
+          <p>Drag the handle on the ray to explore angles from 0° to 180°!</p>
+        </div>
+
+        <div class="zone-grid">
+          <div class="canvas-card">
+            <div class="canvas-controls">
+              <button id="pg-protractor-btn" class="btn btn-toggle">
+                📏 Protractor: <span class="status-text">OFF</span>
+              </button>
+              <button id="pg-estimate-btn" class="btn btn-toggle">
+                💭 Estimate First Mode: <span class="status-text">OFF</span>
+              </button>
+            </div>
+
+            <div class="canvas-wrapper">
+              <canvas id="playground-canvas" width="600" height="400"></canvas>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <div id="pg-angle-display" class="angle-display">
+              <span class="angle-number" id="pg-degree-val">45°</span>
+              <span class="angle-badge badge-acute" id="pg-type-badge">
+                <span id="pg-type-emoji">🌱</span> <span id="pg-type-label">Acute Angle</span>
+              </span>
+            </div>
+
+            <!-- Estimate Mode Panel (Hidden by default) -->
+            <div id="pg-estimate-panel" class="estimate-panel hidden">
+              <h3>💭 Guess the Angle!</h3>
+              <p>Type your guess before revealing:</p>
+              <div class="estimate-controls">
+                <input type="number" id="pg-guess-input" min="0" max="180" placeholder="e.g. 50">
+                <button id="pg-check-guess-btn" class="btn btn-primary">Check Guess</button>
+              </div>
+              <div id="pg-guess-feedback" class="guess-feedback hidden"></div>
+            </div>
+
+            <div class="snap-hint-box">
+              <span>✨ Snaps gently at 30°, 45°, 60°, 90°, 120°, 180°</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reflection Prompt Card -->
+        <div class="reflection-card">
+          <div class="reflection-header">
+            <h3>💡 Think & Explain</h3>
+            <button class="btn-icon" id="pg-next-reflection" title="Next Question">🔄 New Question</button>
+          </div>
+          <p class="reflection-prompt" id="pg-reflection-text">What happens to the angle type when you drag past 90°?</p>
+          <div class="reflection-input-group">
+            <textarea id="pg-reflection-input" placeholder="Type your observations or explanation here..." rows="2"></textarea>
+            <button id="pg-share-idea-btn" class="btn btn-accent">🚀 Share my idea</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ZONE 2: Polygon Lab -->
+      <section id="zone-polygon" class="zone-content">
+        <div class="zone-header">
+          <h2>🛑 Polygon Lab</h2>
+          <p>Choose the number of sides to build regular polygons and measure interior angles!</p>
+        </div>
+
+        <div class="zone-grid">
+          <div class="canvas-card">
+            <div class="polygon-controls-top">
+              <div class="side-selector">
+                <label>Number of Sides (3 to 8):</label>
+                <div class="stepper-controls">
+                  <button id="poly-minus-btn" class="btn btn-step">-</button>
+                  <input type="range" id="poly-sides-range" min="3" max="8" value="3" step="1">
+                  <span id="poly-sides-val" class="sides-badge">3 Sides</span>
+                  <button id="poly-plus-btn" class="btn btn-step">+</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="canvas-controls">
+              <button id="poly-all-angles-btn" class="btn btn-toggle">
+                📐 Show All Angles: <span class="status-text">OFF</span>
+              </button>
+              <button id="poly-grid-btn" class="btn btn-toggle">
+                🏁 Grid: <span id="poly-grid-label" class="status-text">Square Grid</span>
+              </button>
+            </div>
+
+            <div class="canvas-wrapper">
+              <canvas id="polygon-canvas" width="600" height="400"></canvas>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <div class="polygon-info">
+              <div class="poly-name-badge" id="poly-name">Equilateral Triangle</div>
+              <div class="interior-angle-box">
+                <span class="info-label">Interior Angle:</span>
+                <span class="info-value" id="poly-angle-val">60°</span>
+              </div>
+              <div class="poly-details">
+                <div class="detail-item">
+                  <span class="detail-label">Sides:</span>
+                  <span id="poly-sides-count" class="detail-val">3</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Total Interior Sum:</span>
+                  <span id="poly-sum-val" class="detail-val">180°</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reflection Prompt Card -->
+        <div class="reflection-card">
+          <div class="reflection-header">
+            <h3>💡 Think & Explain</h3>
+            <button class="btn-icon" id="poly-next-reflection" title="Next Question">🔄 New Question</button>
+          </div>
+          <p class="reflection-prompt" id="poly-reflection-text">What do you notice about the interior angle when there are more sides?</p>
+          <div class="reflection-input-group">
+            <textarea id="poly-reflection-input" placeholder="Type your observations or explanation here..." rows="2"></textarea>
+            <button id="poly-share-idea-btn" class="btn btn-accent">🚀 Share my idea</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ZONE 3: Construct Studio -->
+      <section id="zone-construct" class="zone-content">
+        <div class="zone-header">
+          <h2>🎯 Construct Studio</h2>
+          <p>Pick a target angle and drag the ray to construct it as accurately as you can!</p>
+        </div>
+
+        <div class="zone-grid">
+          <div class="canvas-card">
+            <div class="construct-target-bar">
+              <span class="target-label">Target Angle:</span>
+              <div class="quick-presets">
+                <button class="btn btn-preset" data-angle="35">35°</button>
+                <button class="btn btn-preset" data-angle="60">60°</button>
+                <button class="btn btn-preset" data-angle="110">110°</button>
+                <button class="btn btn-preset" data-angle="150">150°</button>
+              </div>
+              <div class="custom-target">
+                <input type="number" id="construct-target-input" min="0" max="180" value="60">
+                <button id="construct-set-target-btn" class="btn btn-primary">Set</button>
+              </div>
+            </div>
+
+            <div class="canvas-controls">
+              <button id="construct-protractor-btn" class="btn btn-toggle">
+                📏 Protractor: <span class="status-text">OFF</span>
+              </button>
+            </div>
+
+            <div class="canvas-wrapper">
+              <canvas id="construct-canvas" width="600" height="400"></canvas>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <div class="construct-feedback-card">
+              <div class="proximity-heading">Construction Feedback</div>
+              <div id="construct-diff-display" class="diff-number">You are 25° away</div>
+              <div class="progress-bar-container">
+                <div id="construct-progress-fill" class="progress-fill" style="width: 50%;"></div>
+              </div>
+              <div id="construct-status-msg" class="status-msg">Keep dragging to get closer to your target!</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reflection Prompt Card -->
+        <div class="reflection-card">
+          <div class="reflection-header">
+            <h3>💡 Think & Explain</h3>
+            <button class="btn-icon" id="construct-next-reflection" title="Next Question">🔄 New Question</button>
+          </div>
+          <p class="reflection-prompt" id="construct-reflection-text">Can you build 150° without using the protractor?</p>
+          <div class="reflection-input-group">
+            <textarea id="construct-reflection-input" placeholder="Type your observations or explanation here..." rows="2"></textarea>
+            <button id="construct-share-idea-btn" class="btn btn-accent">🚀 Share my idea</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
 </html>
