@@ -1,13 +1,659 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>app</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Angles Around Us - Angle Detective Town</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Main Header -->
+    <header class="app-header">
+      <div class="header-title-group">
+        <h1 class="app-title">🔍 Angles Around Us</h1>
+        <p class="app-subtitle">Angle Detective Town • Year 6 Exploration</p>
+      </div>
+      <button id="sound-toggle" class="btn-sound" aria-label="Toggle sound">
+        <span id="sound-icon">🔈</span>
+        <span id="sound-text">Sound: OFF</span>
+      </button>
+    </header>
+
+    <!-- Detective Mascot & Guide Speech -->
+    <section class="mascot-banner">
+      <div class="mascot-svg-wrapper">
+        <svg class="detective-mascot" viewBox="0 0 120 120" width="100" height="100" aria-label="Detective Robot Mascot">
+          <!-- Robot Antenna -->
+          <line x1="60" y1="20" x2="60" y2="5" stroke="#FFD166" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="60" cy="5" r="5" fill="#EF476F"/>
+
+          <!-- Robot Head -->
+          <rect x="25" y="20" width="70" height="55" rx="15" fill="#118AB2" stroke="#073B4C" stroke-width="3"/>
+          <rect x="32" y="28" width="56" height="38" rx="8" fill="#E0F7FA"/>
+
+          <!-- Eyes -->
+          <circle cx="45" cy="44" r="7" fill="#073B4C"/>
+          <circle cx="47" cy="42" r="2.5" fill="#FFFFFF"/>
+          <circle cx="75" cy="44" r="7" fill="#073B4C"/>
+          <circle cx="77" cy="42" r="2.5" fill="#FFFFFF"/>
+
+          <!-- Cute Smile -->
+          <path d="M 48 56 Q 60 65 72 56" fill="none" stroke="#073B4C" stroke-width="3" stroke-linecap="round"/>
+          <!-- Rosy Cheeks -->
+          <circle cx="38" cy="52" r="4" fill="#FFD166" opacity="0.8"/>
+          <circle cx="82" cy="52" r="4" fill="#FFD166" opacity="0.8"/>
+
+          <!-- Detective Hat -->
+          <path d="M 15 22 C 25 5, 95 5, 105 22 Z" fill="#8338EC" stroke="#073B4C" stroke-width="3"/>
+          <ellipse cx="60" cy="22" rx="50" ry="6" fill="#6C5CE7" stroke="#073B4C" stroke-width="2"/>
+          <rect x="35" y="15" width="50" height="5" fill="#FFD166"/>
+          <!-- Detective Badge on Hat -->
+          <polygon points="60,8 63,14 69,14 64,18 66,24 60,20 54,24 56,18 51,14 57,14" fill="#FFD166"/>
+
+          <!-- Robot Body -->
+          <rect x="35" y="78" width="50" height="32" rx="10" fill="#118AB2" stroke="#073B4C" stroke-width="3"/>
+          <!-- Tie / Badge -->
+          <polygon points="60,80 66,95 60,102 54,95" fill="#EF476F"/>
+
+          <!-- Magnifying Glass held in hand -->
+          <g transform="translate(80, 65)">
+            <line x1="12" y1="12" x2="25" y2="25" stroke="#8338EC" stroke-width="5" stroke-linecap="round"/>
+            <circle cx="8" cy="8" r="10" fill="#E0F7FA" fill-opacity="0.6" stroke="#FFD166" stroke-width="3"/>
+            <circle cx="8" cy="8" r="7" fill="none" stroke="#FFFFFF" stroke-width="1.5" stroke-dasharray="8 4"/>
+          </g>
+        </svg>
+      </div>
+
+      <div class="speech-bubble-container">
+        <div id="mascot-speech" class="speech-bubble">
+          <p id="speech-text">Hello, Detective! Let's explore angles in Detective Town! Tap a place below to begin! 🕵️‍♂️✨</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs" role="tablist">
+      <button class="tab-btn active" data-tab="clock" role="tab" aria-selected="true">
+        <span class="tab-icon">⏰</span>
+        <span class="tab-label">Clock Tower</span>
+      </button>
+      <button class="tab-btn" data-tab="roof" role="tab" aria-selected="false">
+        <span class="tab-icon">🏠</span>
+        <span class="tab-label">Roof Builder</span>
+      </button>
+      <button class="tab-btn" data-tab="door" role="tab" aria-selected="false">
+        <span class="tab-icon">🚪</span>
+        <span class="tab-label">Door Safety</span>
+      </button>
+      <button class="tab-btn" data-tab="turns" role="tab" aria-selected="false">
+        <span class="tab-icon">🤖</span>
+        <span class="tab-label">Game Turns</span>
+      </button>
+      <button class="tab-btn" data-tab="hunt" role="tab" aria-selected="false">
+        <span class="tab-icon">🔎</span>
+        <span class="tab-label">Angle Hunt</span>
+      </button>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+
+      <!-- PLACE 1: CLOCK TOWER -->
+      <section id="tab-clock" class="place-section active" role="tabpanel">
+        <div class="place-header">
+          <h2>⏰ Clock Tower</h2>
+          <div class="prompt-box">
+            <span class="prompt-icon">💡</span>
+            <span class="prompt-text">What angle do the hands make at 3 o'clock? What about 6 o'clock? Drag the hands to explore!</span>
+          </div>
+        </div>
+
+        <div class="clock-workspace">
+          <div class="clock-display-card">
+            <!-- SVG Clock Display -->
+            <div class="svg-container">
+              <svg id="clock-svg" viewBox="0 0 320 320" width="300" height="300">
+                <!-- Clock Outer Rim & Face -->
+                <circle cx="160" cy="160" r="145" fill="#2A3D59" stroke="#FFD166" stroke-width="8"/>
+                <circle cx="160" cy="160" r="135" fill="#0F1B29"/>
+                <circle cx="160" cy="160" r="128" fill="#1B2A41" stroke="#06D6A0" stroke-width="3" stroke-dasharray="4 4"/>
+
+                <!-- Clock Hour Ticks & Numbers -->
+                <g id="clock-numbers"></g>
+
+                <!-- Angle Arc Layer -->
+                <path id="clock-angle-arc" fill="rgba(255, 209, 102, 0.35)" stroke="#FFD166" stroke-width="4"/>
+
+                <!-- Clock Center Pin -->
+                <circle cx="160" cy="160" r="12" fill="#EF476F" stroke="#FFFFFF" stroke-width="3"/>
+
+                <!-- Hour Hand Group -->
+                <g id="hour-hand-group" class="draggable-hand" style="cursor: grab;">
+                  <line x1="160" y1="160" x2="160" y2="90" stroke="#EF476F" stroke-width="10" stroke-linecap="round"/>
+                  <circle cx="160" cy="90" r="12" fill="#EF476F" stroke="#FFFFFF" stroke-width="2"/>
+                </g>
+
+                <!-- Minute Hand Group -->
+                <g id="minute-hand-group" class="draggable-hand" style="cursor: grab;">
+                  <line x1="160" y1="160" x2="160" y2="45" stroke="#06D6A0" stroke-width="7" stroke-linecap="round"/>
+                  <circle cx="160" cy="45" r="10" fill="#06D6A0" stroke="#FFFFFF" stroke-width="2"/>
+                </g>
+
+                <!-- Center Knob -->
+                <circle cx="160" cy="160" r="6" fill="#FFFFFF"/>
+              </svg>
+            </div>
+
+            <div class="clock-stats-panel">
+              <div class="stat-badge time-badge">
+                <span class="stat-label">Digital Time</span>
+                <span id="digital-time" class="stat-value">03:00</span>
+              </div>
+              <div class="stat-badge angle-badge">
+                <span class="stat-label">Angle Between Hands</span>
+                <span id="clock-angle-val" class="stat-value highlight-pink">90°</span>
+              </div>
+              <div class="stat-badge type-badge">
+                <span class="stat-label">Angle Type</span>
+                <span id="clock-angle-type" class="stat-value type-pill right-angle">Right Angle 📐</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Time Preset Buttons -->
+          <div class="presets-bar">
+            <span class="presets-title">⚡ Quick Jump:</span>
+            <div class="preset-buttons">
+              <button class="btn-preset" data-time="03:00">3:00 (90°)</button>
+              <button class="btn-preset" data-time="06:00">6:00 (180°)</button>
+              <button class="btn-preset" data-time="09:00">9:00 (90°)</button>
+              <button class="btn-preset" data-time="12:00">12:00 (0°)</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reflection Card -->
+        <div class="reflection-card">
+          <div class="card-header">
+            <span class="card-icon">🤔</span>
+            <h3>Think & Explain</h3>
+          </div>
+          <p class="reflection-prompt" id="clock-prompt">Why does 3 o'clock make a right angle (90°)? How many degrees does each hour mark represent?</p>
+          <div class="reflection-input-group">
+            <textarea class="reflection-input" placeholder="Type your idea here..." rows="2" aria-label="Clock reflection input"></textarea>
+            <button class="btn-share">Share my idea 💡</button>
+          </div>
+          <div class="shared-bubble-container"></div>
+        </div>
+      </section>
+
+      <!-- PLACE 2: ROOF BUILDER -->
+      <section id="tab-roof" class="place-section" role="tabpanel">
+        <div class="place-header">
+          <h2>🏠 Roof Builder</h2>
+          <div class="prompt-box">
+            <span class="prompt-icon">💡</span>
+            <span class="prompt-text">Why do many roofs have a pointed top? Drag the top handle up and down to change the roof angle!</span>
+          </div>
+        </div>
+
+        <div class="roof-workspace">
+          <div class="roof-display-card">
+            <div class="svg-container">
+              <svg id="roof-svg" viewBox="0 0 360 280" width="340" height="260">
+                <!-- Sky Background -->
+                <rect width="360" height="280" rx="16" fill="#152238"/>
+
+                <!-- Sun / Weather visual -->
+                <circle cx="310" cy="45" r="22" fill="#FFD166" opacity="0.8"/>
+
+                <!-- Raindrops container -->
+                <g id="roof-raindrops"></g>
+                <!-- Puddle container -->
+                <g id="roof-puddles"></g>
+
+                <!-- House Body -->
+                <rect x="70" y="150" width="220" height="110" rx="4" fill="#E07A5F" stroke="#073B4C" stroke-width="3"/>
+                <!-- Door -->
+                <rect x="155" y="200" width="50" height="60" rx="4" fill="#8D99AE" stroke="#073B4C" stroke-width="2"/>
+                <circle cx="192" cy="232" r="4" fill="#FFD166"/>
+                <!-- Windows -->
+                <rect x="90" y="170" width="40" height="35" rx="4" fill="#F4A261" stroke="#073B4C" stroke-width="2"/>
+                <line x1="110" y1="170" x2="110" y2="205" stroke="#073B4C" stroke-width="2"/>
+                <line x1="90" y1="187.5" x2="130" y2="187.5" stroke="#073B4C" stroke-width="2"/>
+
+                <rect x="230" y="170" width="40" height="35" rx="4" fill="#F4A261" stroke="#073B4C" stroke-width="2"/>
+                <line x1="250" y1="170" x2="250" y2="205" stroke="#073B4C" stroke-width="2"/>
+                <line x1="230" y1="187.5" x2="270" y2="187.5" stroke="#073B4C" stroke-width="2"/>
+
+                <!-- Dynamic Triangular Roof Fill & Outline -->
+                <polygon id="roof-polygon" points="70,150 180,70 290,150" fill="#118AB2" stroke="#073B4C" stroke-width="4"/>
+
+                <!-- Angle Arc at Apex -->
+                <path id="roof-angle-arc" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="3"/>
+
+                <!-- Apex Handle (Draggable) -->
+                <g id="roof-handle" class="draggable-handle" style="cursor: ns-resize;">
+                  <circle id="roof-handle-outer" cx="180" cy="70" r="18" fill="#EF476F" opacity="0.4"/>
+                  <circle cx="180" cy="70" r="12" fill="#EF476F" stroke="#FFFFFF" stroke-width="3"/>
+                  <path d="M 180 62 L 180 78 M 174 66 L 180 60 L 186 66 M 174 74 L 180 80 L 186 74" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </g>
+              </svg>
+            </div>
+
+            <div class="roof-stats-panel">
+              <div class="stat-badge angle-badge">
+                <span class="stat-label">Roof Peak Angle</span>
+                <span id="roof-angle-val" class="stat-value highlight-cyan">70°</span>
+              </div>
+              <div class="stat-badge type-badge">
+                <span class="stat-label">Angle Type</span>
+                <span id="roof-angle-type" class="stat-value type-pill acute">Acute Angle 📐</span>
+              </div>
+              <div id="roof-weather-status" class="weather-status steep-status">
+                <span class="weather-icon">🌧️</span>
+                <span id="roof-status-text">Steep roof (70°) — Rain slides off quickly! 🌧️⚡</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reflection Card -->
+        <div class="reflection-card">
+          <div class="card-header">
+            <span class="card-icon">🤔</span>
+            <h3>Think & Explain</h3>
+          </div>
+          <p class="reflection-prompt" id="roof-prompt">What happens when the roof angle gets closer to 150°? Why are steep roofs good in heavy rain areas?</p>
+          <div class="reflection-input-group">
+            <textarea class="reflection-input" placeholder="Type your idea here..." rows="2" aria-label="Roof reflection input"></textarea>
+            <button class="btn-share">Share my idea 💡</button>
+          </div>
+          <div class="shared-bubble-container"></div>
+        </div>
+      </section>
+
+      <!-- PLACE 3: DOOR SAFETY -->
+      <section id="tab-door" class="place-section" role="tabpanel">
+        <div class="place-header">
+          <h2>🚪 Door Safety</h2>
+          <div class="prompt-box">
+            <span class="prompt-icon">💡</span>
+            <span class="prompt-text">Drag the door to open it (0° to 180°). Drag the person to a safe spot where the door won't hit them!</span>
+          </div>
+        </div>
+
+        <div class="door-workspace">
+          <div class="door-display-card">
+            <div class="svg-container">
+              <svg id="door-svg" viewBox="0 0 360 280" width="340" height="260">
+                <!-- Room Floor Plan Background -->
+                <rect width="360" height="280" rx="16" fill="#1B2A41"/>
+                <!-- Floor Grid pattern -->
+                <path d="M 0 40 H 360 M 0 80 H 360 M 0 120 H 360 M 0 160 H 360 M 0 200 H 360 M 0 240 H 360" stroke="#2A3D59" stroke-width="1.5"/>
+                <path d="M 40 0 V 280 M 80 0 V 280 M 120 0 V 280 M 160 0 V 280 M 200 0 V 280 M 240 0 V 280 M 280 0 V 280 M 320 0 V 280" stroke="#2A3D59" stroke-width="1.5"/>
+
+                <!-- Wall Structure -->
+                <rect x="20" y="130" width="100" height="20" fill="#4A5568" stroke="#073B4C" stroke-width="2"/>
+                <rect x="240" y="130" width="100" height="20" fill="#4A5568" stroke="#073B4C" stroke-width="2"/>
+                <text x="50" y="120" fill="#A0AEC0" font-size="12" font-weight="bold">WALL</text>
+                <text x="270" y="120" fill="#A0AEC0" font-size="12" font-weight="bold">WALL</text>
+
+                <!-- Door Hinge Point (120, 140) -->
+                <circle cx="120" cy="140" r="8" fill="#FFD166" stroke="#073B4C" stroke-width="2"/>
+
+                <!-- Door Swing Sector Arc -->
+                <path id="door-sector" fill="rgba(6, 214, 160, 0.3)" stroke="#06D6A0" stroke-width="3" stroke-dasharray="6 3"/>
+
+                <!-- Door Blade Line -->
+                <line id="door-blade" x1="120" y1="140" x2="240" y2="140" stroke="#E07A5F" stroke-width="12" stroke-linecap="round"/>
+                <!-- Door Handle Circle on blade -->
+                <g id="door-handle-group" class="draggable-handle" style="cursor: grab;">
+                  <circle id="door-handle-outer" cx="240" cy="140" r="16" fill="#EF476F" opacity="0.4"/>
+                  <circle id="door-handle-inner" cx="240" cy="140" r="10" fill="#EF476F" stroke="#FFFFFF" stroke-width="2"/>
+                </g>
+
+                <!-- Draggable Person Mascot -->
+                <g id="person-group" class="draggable-handle" transform="translate(200, 70)" style="cursor: move;">
+                  <!-- Person Body Visual -->
+                  <circle cx="0" cy="0" r="22" fill="rgba(255, 209, 102, 0.2)" stroke="#FFD166" stroke-width="2"/>
+                  <circle cx="0" cy="-6" r="10" fill="#FFD166" stroke="#073B4C" stroke-width="2"/>
+                  <path d="M -12 12 C -12 2, 12 2, 12 12 Z" fill="#06D6A0" stroke="#073B4C" stroke-width="2"/>
+                  <!-- Face -->
+                  <circle cx="-3" cy="-8" r="1.5" fill="#073B4C"/>
+                  <circle cx="3" cy="-8" r="1.5" fill="#073B4C"/>
+                  <path d="M -3 -3 Q 0 0 3 -3" fill="none" stroke="#073B4C" stroke-width="1.5"/>
+                  <text x="0" y="-28" text-anchor="middle" fill="#FFFFFF" font-size="10" font-weight="bold">DRAG ME</text>
+                </g>
+              </svg>
+            </div>
+
+            <div class="door-stats-panel">
+              <div class="stat-badge angle-badge">
+                <span class="stat-label">Door Opening Angle</span>
+                <span id="door-angle-val" class="stat-value highlight-green">0°</span>
+              </div>
+              <div class="stat-badge type-badge">
+                <span class="stat-label">Angle Type</span>
+                <span id="door-angle-type" class="stat-value type-pill straight">Closed (0°)</span>
+              </div>
+              <div id="door-safety-alert" class="safety-status safe">
+                <span id="safety-icon">✅</span>
+                <span id="safety-text">Safe! Person is standing clear of the door swing area.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reflection Card -->
+        <div class="reflection-card">
+          <div class="card-header">
+            <span class="card-icon">🤔</span>
+            <h3>Think & Explain</h3>
+          </div>
+          <p class="reflection-prompt" id="door-prompt">How much space do you need to open a door safely? What happens when a door opens 180° flat against a wall?</p>
+          <div class="reflection-input-group">
+            <textarea class="reflection-input" placeholder="Type your idea here..." rows="2" aria-label="Door reflection input"></textarea>
+            <button class="btn-share">Share my idea 💡</button>
+          </div>
+          <div class="shared-bubble-container"></div>
+        </div>
+      </section>
+
+      <!-- PLACE 4: GAME TURNS -->
+      <section id="tab-turns" class="place-section" role="tabpanel">
+        <div class="place-header">
+          <h2>🤖 Game Turns</h2>
+          <div class="prompt-box">
+            <span class="prompt-icon">💡</span>
+            <span class="prompt-text">What turn makes the character face the opposite way? Turn left or right and move forward to reach the star!</span>
+          </div>
+        </div>
+
+        <div class="turns-workspace">
+          <div class="turns-board-card">
+            <!-- Grid Game Board -->
+            <div class="svg-container">
+              <svg id="grid-svg" viewBox="0 0 300 300" width="290" height="290">
+                <!-- Grid Lines (5x5 grid, 60px cell size) -->
+                <rect width="300" height="300" fill="#152238" rx="12"/>
+                <g stroke="#2A3D59" stroke-width="2">
+                  <line x1="0" y1="60" x2="300" y2="60"/>
+                  <line x1="0" y1="120" x2="300" y2="120"/>
+                  <line x1="0" y1="180" x2="300" y2="180"/>
+                  <line x1="0" y1="240" x2="300" y2="240"/>
+
+                  <line x1="60" y1="0" x2="60" y2="300"/>
+                  <line x1="120" y1="0" x2="120" y2="300"/>
+                  <line x1="180" y1="0" x2="180" y2="300"/>
+                  <line x1="240" y1="0" x2="240" y2="300"/>
+                </g>
+
+                <!-- Turn Arc Effect Overlay -->
+                <path id="turn-arc-overlay" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="3" opacity="0"/>
+
+                <!-- Target Star (Draggable / Positioned) -->
+                <g id="star-target" transform="translate(210, 90)">
+                  <polygon points="0,-18 5,-5 18,-4 8,5 11,18 0,10 -11,18 -8,5 -18,-4 -5,-5" fill="#FFD166" stroke="#073B4C" stroke-width="2"/>
+                  <circle cx="0" cy="0" r="22" fill="none" stroke="#FFD166" stroke-width="2" stroke-dasharray="4 3"/>
+                </g>
+
+                <!-- Character Group (Robot / Rocket) -->
+                <g id="robot-character" transform="translate(90, 210) rotate(0)">
+                  <!-- Facing direction arrow indicator -->
+                  <polygon points="0,-32 10,-20 -10,-20" fill="#06D6A0"/>
+                  <!-- Cute Robot Body -->
+                  <rect x="-18" y="-18" width="36" height="36" rx="8" fill="#118AB2" stroke="#FFFFFF" stroke-width="2"/>
+                  <!-- Eyes -->
+                  <circle cx="-6" cy="-6" r="4" fill="#073B4C"/>
+                  <circle cx="6" cy="-6" r="4" fill="#073B4C"/>
+                  <circle cx="-5" cy="-7" r="1.5" fill="#FFFFFF"/>
+                  <circle cx="7" cy="-7" r="1.5" fill="#FFFFFF"/>
+                  <!-- Smile -->
+                  <path d="M -6 6 Q 0 10 6 6" fill="none" stroke="#073B4C" stroke-width="2"/>
+                </g>
+              </svg>
+            </div>
+
+            <!-- Controls Panel -->
+            <div class="turns-controls">
+              <div class="facing-info">
+                <span>Facing Angle: <strong id="facing-deg" class="highlight-yellow">0° (UP)</strong></span>
+              </div>
+
+              <div class="turn-btn-group">
+                <p class="control-label">↪️ Turn Left:</p>
+                <div class="btn-row">
+                  <button class="btn-turn" data-dir="left" data-angle="45">↺ 45°</button>
+                  <button class="btn-turn" data-dir="left" data-angle="90">↺ 90°</button>
+                  <button class="btn-turn" data-dir="left" data-angle="180">↺ 180°</button>
+                </div>
+              </div>
+
+              <div class="turn-btn-group">
+                <p class="control-label">↩️ Turn Right:</p>
+                <div class="btn-row">
+                  <button class="btn-turn" data-dir="right" data-angle="45">↻ 45°</button>
+                  <button class="btn-turn" data-dir="right" data-angle="90">↻ 90°</button>
+                  <button class="btn-turn" data-dir="right" data-angle="180">↻ 180°</button>
+                </div>
+              </div>
+
+              <div class="action-btn-row">
+                <button id="btn-move-forward" class="btn-action move-btn">🚀 Move 1 Step Forward</button>
+                <button id="btn-reset-turns" class="btn-action reset-btn">🔄 Reset Position</button>
+              </div>
+
+              <!-- History Log -->
+              <div class="move-history-card">
+                <h4>📜 Move History</h4>
+                <ul id="history-list" class="history-list">
+                  <li class="empty-msg">No moves yet. Try turning or moving!</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reflection Card -->
+        <div class="reflection-card">
+          <div class="card-header">
+            <span class="card-icon">🤔</span>
+            <h3>Think & Explain</h3>
+          </div>
+          <p class="reflection-prompt" id="turns-prompt">What turn makes the character face the opposite way? What two turns can make the same direction?</p>
+          <div class="reflection-input-group">
+            <textarea class="reflection-input" placeholder="Type your idea here..." rows="2" aria-label="Game turns reflection input"></textarea>
+            <button class="btn-share">Share my idea 💡</button>
+          </div>
+          <div class="shared-bubble-container"></div>
+        </div>
+      </section>
+
+      <!-- PLACE 5: ANGLE HUNT -->
+      <section id="tab-hunt" class="place-section" role="tabpanel">
+        <div class="place-header">
+          <h2>🔎 Angle Hunt</h2>
+          <div class="prompt-box">
+            <span class="prompt-icon">💡</span>
+            <span class="prompt-text">Tap the glowing yellow hotspots around the scene to discover real-world angles!</span>
+          </div>
+        </div>
+
+        <!-- Discovery Progress Bar -->
+        <div class="discovery-meter">
+          <div class="meter-label">
+            <span>🔍 Discovery Progress:</span>
+            <strong id="hunt-progress-text">Found 0 of 7 angles</strong>
+          </div>
+          <div class="progress-bar-track">
+            <div id="hunt-progress-fill" class="progress-bar-fill" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <div class="hunt-workspace">
+          <!-- Interactive Scene Graphic -->
+          <div class="svg-container scene-container">
+            <svg id="hunt-scene-svg" viewBox="0 0 600 380" width="100%" height="auto">
+              <!-- Scene Background: Park / Playground -->
+              <defs>
+                <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#1B2A41"/>
+                  <stop offset="100%" stop-color="#2A3D59"/>
+                </linearGradient>
+                <linearGradient id="grassGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#06D6A0"/>
+                  <stop offset="100%" stop-color="#059669"/>
+                </linearGradient>
+              </defs>
+
+              <rect width="600" height="260" fill="url(#skyGrad)"/>
+              <rect y="260" width="600" height="120" fill="url(#grassGrad)"/>
+
+              <!-- Sun / Moon in sky -->
+              <circle cx="530" cy="50" r="30" fill="#FFD166" opacity="0.9"/>
+              <circle cx="530" cy="50" r="38" fill="none" stroke="#FFD166" stroke-width="2" stroke-dasharray="6 4" opacity="0.6"/>
+
+              <!-- Hills -->
+              <path d="M -20 260 Q 150 200 300 260 T 620 260 L 620 380 L -20 380 Z" fill="#047857" opacity="0.5"/>
+
+              <!-- Hotspot 1: Swing (Acute Angle ~ 45°) -->
+              <g class="hotspot-item" data-id="swing" transform="translate(50, 160)">
+                <!-- Swing Frame -->
+                <line x1="10" y1="120" x2="50" y2="20" stroke="#E07A5F" stroke-width="6"/>
+                <line x1="90" y1="120" x2="50" y2="20" stroke="#E07A5F" stroke-width="6"/>
+                <line x1="30" y1="20" x2="110" y2="20" stroke="#E07A5F" stroke-width="6"/>
+                <line x1="50" y1="20" x2="50" y2="80" stroke="#A0AEC0" stroke-width="2"/>
+                <rect x="40" y="80" width="20" height="6" fill="#8D99AE"/>
+                <!-- Hotspot Ring -->
+                <circle cx="50" cy="20" r="18" class="hotspot-pulse"/>
+                <text x="50" y="24" text-anchor="middle" fill="#073B4C" font-size="12" font-weight="bold">1</text>
+              </g>
+
+              <!-- Hotspot 2: Laptop (Obtuse Angle ~ 120°) -->
+              <g class="hotspot-item" data-id="laptop" transform="translate(190, 220)">
+                <!-- Table -->
+                <rect x="-10" y="40" width="90" height="10" fill="#D4A373"/>
+                <rect x="0" y="50" width="10" height="30" fill="#A26769"/>
+                <rect x="60" y="50" width="10" height="30" fill="#A26769"/>
+                <!-- Laptop base & screen -->
+                <rect x="10" y="34" width="50" height="6" fill="#8D99AE" rx="2"/>
+                <path d="M 10 34 L -5 5 L 40 5 L 50 34" fill="#118AB2" stroke="#FFFFFF" stroke-width="2"/>
+                <!-- Hotspot Ring -->
+                <circle cx="10" cy="34" r="18" class="hotspot-pulse"/>
+                <text x="10" y="38" text-anchor="middle" fill="#073B4C" font-size="12" font-weight="bold">2</text>
+              </g>
+
+              <!-- Hotspot 3: Scissors (Acute Angle ~ 35°) -->
+              <g class="hotspot-item" data-id="scissors" transform="translate(320, 230)">
+                <!-- Scissors Blades & Handles -->
+                <line x1="0" y1="30" x2="40" y2="0" stroke="#C0C0C0" stroke-width="4"/>
+                <line x1="0" y1="0" x2="40" y2="30" stroke="#C0C0C0" stroke-width="4"/>
+                <circle cx="-5" cy="35" r="8" fill="#EF476F"/>
+                <circle cx="-5" cy="-5" r="8" fill="#EF476F"/>
+                <circle cx="20" cy="15" r="3" fill="#073B4C"/>
+                <!-- Hotspot Ring -->
+                <circle cx="20" cy="15" r="18" class="hotspot-pulse"/>
+                <text x="20" y="19" text-anchor="middle" fill="#073B4C" font-size="12" font-weight="bold">3</text>
+              </g>
+
+              <!-- Hotspot 4: Pizza Slice (Acute Angle ~ 45°) -->
+              <g class="hotspot-item" data-id="pizza" transform="translate(420, 230)">
+                <!-- Pizza Slice -->
+                <path d="M 20 20 L 70 -10 A 60 60 0 0 1 70 50 Z" fill="#FFB703" stroke="#FB8500" stroke-width="3"/>
+                <!-- Pepperoni -->
+                <circle cx="45" cy="10" r="4" fill="#E63946"/>
+                <circle cx="55" cy="25" r="4" fill="#E63946"/>
+                <!-- Hotspot Ring -->
+                <circle cx="20" cy="20" r="18" class="hotspot-pulse"/>
+                <text x="20" y="24" text-anchor="middle" fill="#073B4C" font-size="12" font-weight="bold">4</text>
+              </g>
+
+              <!-- Hotspot 5: Ladder against wall (Acute Ground Angle ~ 75°) -->
+              <g class="hotspot-item" data-id="ladder" transform="translate(480, 110)">
+                <!-- Wall -->
+                <rect x="70" y="0" width="20" height="170" fill="#8D99AE"/>
+                <!-- Ladder -->
+                <line x1="10" y1="160" x2="70" y2="20" stroke="#F4A261" stroke-width="5"/>
+                <line x1="22" y1="160" x2="82" y2="20" stroke="#F4A261" stroke-width="5"/>
+                <!-- Rungs -->
+                <line x1="20" y1="140" x2="30" y2="140" stroke="#F4A261" stroke-width="3"/>
+                <line x1="32" y1="110" x2="42" y2="110" stroke="#F4A261" stroke-width="3"/>
+                <line x1="44" y1="80" x2="54" y2="80" stroke="#F4A261" stroke-width="3"/>
+                <line x1="56" y1="50" x2="66" y2="50" stroke="#F4A261" stroke-width="3"/>
+                <!-- Hotspot Ring -->
+                <circle cx="10" cy="160" r="18" class="hotspot-pulse"/>
+                <text x="10" y="164" text-anchor="middle" fill="#073B4C" font-size="12" font-weight="bold">5</text>
+              </g>
+
+              <!-- Hotspot 6: Skate Ramp (Obtuse / Ramp Angle ~ 150°) -->
+              <g class="hotspot-item" data-id="ramp" transform="translate(130, 110)">
+                <!-- Skate Ramp Structure -->
+                <polygon points="0,110 80,110 80,40" fill="#E07A5F" stroke="#073B4C" stroke-width="3"/>
+                <!-- Hotspot Ring -->
+                <circle cx="80" cy="110" r="18" class="hotspot-pulse"/>
+                <text x="80" y="114" text-anchor="middle" fill="#073B4C" font-size="12" font-weight="bold">6</text>
+              </g>
+
+              <!-- Hotspot 7: Signpost (Right Angle ~ 90°) -->
+              <g class="hotspot-item" data-id="signpost" transform="translate(260, 80)">
+                <!-- Vertical Post -->
+                <rect x="25" y="20" width="10" height="100" fill="#8D99AE"/>
+                <!-- Horizontal Board -->
+                <rect x="30" y="30" width="70" height="25" rx="4" fill="#06D6A0" stroke="#073B4C" stroke-width="2"/>
+                <text x="65" y="47" text-anchor="middle" fill="#073B4C" font-size="10" font-weight="bold">PARK ➔</text>
+                <!-- Hotspot Ring -->
+                <circle cx="30" cy="42" r="18" class="hotspot-pulse"/>
+                <text x="30" y="46" text-anchor="middle" fill="#073B4C" font-size="12" font-weight="bold">7</text>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Hotspot Detail Modal / Drawer Popup -->
+        <div id="hunt-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+          <div class="modal-card">
+            <button id="modal-close" class="modal-close-btn" aria-label="Close modal">✖</button>
+            <div class="modal-header">
+              <span id="modal-icon" class="modal-item-icon">🔍</span>
+              <h3 id="modal-title">Object Title</h3>
+            </div>
+            <div class="modal-body">
+              <div class="modal-svg-preview" id="modal-svg-container"></div>
+              <div class="modal-info">
+                <div class="stat-badge angle-badge">
+                  <span class="stat-label">Angle Measure</span>
+                  <span id="modal-angle-val" class="stat-value highlight-yellow">45°</span>
+                </div>
+                <div class="stat-badge type-badge">
+                  <span class="stat-label">Angle Type</span>
+                  <span id="modal-angle-type" class="stat-value type-pill acute">Acute Angle 📐</span>
+                </div>
+                <p id="modal-fact" class="fact-box">This is a fun fact about the angle!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reflection Card -->
+        <div class="reflection-card">
+          <div class="card-header">
+            <span class="card-icon">🤔</span>
+            <h3>Think & Explain</h3>
+          </div>
+          <p class="reflection-prompt" id="hunt-prompt">Where else in your classroom or home can you find acute, right, or obtuse angles?</p>
+          <div class="reflection-input-group">
+            <textarea class="reflection-input" placeholder="Type your idea here..." rows="2" aria-label="Angle hunt reflection input"></textarea>
+            <button class="btn-share">Share my idea 💡</button>
+          </div>
+          <div class="shared-bubble-container"></div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
 </html>
