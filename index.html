@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Angle Quest 🎯 - Space Adventure Candy World</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Canvas for celebration confetti and fireworks -->
+  <canvas id="particle-canvas"></canvas>
+
+  <!-- Animated Space Background Elements -->
+  <div class="bg-decorations" aria-hidden="true">
+    <div class="planet planet-1"></div>
+    <div class="planet planet-2"></div>
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="star-twinkle st-1"></div>
+    <div class="star-twinkle st-2"></div>
+    <div class="star-twinkle st-3"></div>
+  </div>
+
+  <!-- Global Header Bar -->
+  <header class="global-header">
+    <button id="btn-home" class="icon-btn candy-btn-sm" title="Go to Home" aria-label="Home">
+      <span class="btn-icon">🏡</span> Home
+    </button>
+    <div class="header-title-mini">Angle Quest 🎯</div>
+    <button id="btn-mute" class="icon-btn candy-btn-sm" title="Toggle Sound" aria-label="Mute sound">
+      <span id="mute-icon" class="btn-icon">🔊</span> <span id="mute-text">Sound ON</span>
+    </button>
+  </header>
+
+  <!-- Shared Prot-Bot Mascot Overlay -->
+  <div id="prot-bot-container" class="prot-bot-floating">
+    <div id="prot-bot-speech" class="speech-bubble">
+      <span id="speech-text">Welcome to Angle Quest! Pick a game to start!</span>
+    </div>
+    <div id="prot-bot-svg-wrapper" class="prot-bot-avatar">
+      <!-- SVG rendered dynamically or inline -->
+    </div>
+  </div>
+
+  <!-- SCREEN 1: HOME SCREEN -->
+  <section id="screen-home" class="app-screen active">
+    <div class="home-hero">
+      <h1 class="bouncing-title" aria-label="Angle Quest">
+        <span class="letter l-1">A</span><span class="letter l-2">n</span><span class="letter l-3">g</span><span class="letter l-4">l</span><span class="letter l-5">e</span>
+        <span class="letter l-space">&nbsp;</span>
+        <span class="letter l-6">Q</span><span class="letter l-7">u</span><span class="letter l-8">e</span><span class="letter l-9">s</span><span class="letter l-10">t</span>
+        <span class="title-emoji">🎯</span>
+      </h1>
+      <p class="home-subtitle">Year 6 Mathematics • Space Adventure Candy World 🚀✨</p>
+
+      <div class="game-select-cards">
+        <button id="btn-select-g1" class="candy-card-btn card-blue">
+          <div class="card-badge">10 min • Group of 3</div>
+          <div class="card-icon">🔐</div>
+          <div class="card-title">Game 1: Angle Escape Room</div>
+          <div class="card-desc">Work in 3s! Open 3 magic locks by solving angle puzzles together!</div>
+        </button>
+
+        <button id="btn-select-g2" class="candy-card-btn card-purple">
+          <div class="card-badge">5 min • Whole Class</div>
+          <div class="card-icon">📐</div>
+          <div class="card-title">Game 2: Human Protractor</div>
+          <div class="card-desc">Stand at the TV screen and pose your arms to match giant angles!</div>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREEN 2: GAME 1 INTRO -->
+  <section id="screen-g1-intro" class="app-screen">
+    <div class="screen-box candy-card">
+      <h2 class="section-title">🔐 Game 1: Angle Escape Room</h2>
+      <p class="lead-text">Group Rule: <strong>No answer is submitted until all 3 pupils agree!</strong></p>
+
+      <div class="roles-grid">
+        <div class="role-card card-yellow">
+          <div class="role-badge-icon">🧭</div>
+          <h3 class="role-title">Navigator</h3>
+          <p class="role-desc">Taps the screen and selects options.</p>
+        </div>
+        <div class="role-card card-pink">
+          <div class="role-badge-icon">📖</div>
+          <h3 class="role-title">Reader</h3>
+          <p class="role-desc">Reads the questions aloud to the team.</p>
+        </div>
+        <div class="role-card card-green">
+          <div class="role-badge-icon">✅</div>
+          <h3 class="role-title">Checker</h3>
+          <p class="role-desc">Says <em>"We agree!"</em> and confirms submission.</p>
+        </div>
+      </div>
+
+      <div class="action-row">
+        <button id="btn-g1-start" class="candy-btn candy-btn-lg candy-green">Start Escape Room 🚀</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREEN 3: GAME 1 GAMEPLAY -->
+  <section id="screen-g1-gameplay" class="app-screen">
+    <div class="g1-status-bar">
+      <div class="status-item timer-box">
+        <span class="status-label">⏳ FUEL TIMER:</span>
+        <div class="fuel-bar-track">
+          <div id="g1-fuel-bar" class="fuel-bar-fill"></div>
+        </div>
+        <span id="g1-timer-text" class="timer-digits">10:00</span>
+      </div>
+
+      <div class="status-item lock-progress">
+        <span class="status-label">LOCKS:</span>
+        <span id="lock-1-icon" class="lock-icon">🔒</span>
+        <span id="lock-2-icon" class="lock-icon">🔒</span>
+        <span id="lock-3-icon" class="lock-icon">🔒</span>
+      </div>
+
+      <div class="status-item score-box">
+        <span class="status-label">COINS:</span>
+        <span class="coin-icon">🪙</span>
+        <span id="g1-coins" class="coin-count">0</span>
+      </div>
+    </div>
+
+    <!-- Active Roles Display -->
+    <div class="roles-banner">
+      <div class="role-pill pill-nav"><span class="badge-icon">🧭</span> Nav: <strong id="role-nav-name">Pupil 1</strong></div>
+      <div class="role-pill pill-read"><span class="badge-icon">📖</span> Reader: <strong id="role-read-name">Pupil 2</strong></div>
+      <div class="role-pill pill-check"><span class="badge-icon">✅</span> Checker: <strong id="role-check-name">Pupil 3</strong></div>
+    </div>
+
+    <!-- Question Container -->
+    <div id="g1-world-container" class="g1-world-box level-1-bg">
+      <div class="world-header">
+        <span id="g1-level-title" class="world-tag">Level 1: Jungle Gate 🌿</span>
+        <div id="g1-stars-progress" class="stars-counter">
+          <!-- Stars 1-9 generated dynamically -->
+        </div>
+      </div>
+
+      <div class="question-card candy-card">
+        <h3 id="g1-question-text" class="question-prompt">What type of angle is this?</h3>
+
+        <div id="g1-diagram-container" class="diagram-holder">
+          <!-- SVG diagram inserted dynamically -->
+        </div>
+
+        <div id="g1-options-grid" class="options-grid">
+          <!-- 4 Candy buttons created in JS -->
+        </div>
+
+        <div class="confirm-box">
+          <button id="btn-g1-confirm" class="candy-btn candy-btn-xl candy-orange" disabled>
+            ✅ We all agree! (Checker confirm)
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reader Explanation Overlay Modal (Level 3) -->
+    <div id="explain-overlay" class="modal-overlay hidden">
+      <div class="modal-card candy-card card-purple">
+        <h2>📖 Reader Challenge!</h2>
+        <p class="explain-instruction">Reader: Say <strong>"because..."</strong> and explain your team's math reasoning aloud to your group!</p>
+        <button id="btn-explained-confirm" class="candy-btn candy-btn-lg candy-green">We explained it! 🗣️</button>
+      </div>
+    </div>
+
+    <!-- Question Feedback Overlay Modal -->
+    <div id="feedback-overlay" class="modal-overlay hidden">
+      <div id="feedback-card" class="modal-card candy-card">
+        <div id="feedback-icon" class="feedback-emoji">🎉</div>
+        <h2 id="feedback-title">Correct!</h2>
+        <p id="feedback-msg">Great job! Angles on a straight line add up to 180°.</p>
+        <button id="btn-feedback-next" class="candy-btn candy-btn-lg candy-blue">Continue ➡️</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREEN 4: GAME 1 LEVEL COMPLETE -->
+  <section id="screen-g1-level-complete" class="app-screen">
+    <div class="screen-box candy-card text-center">
+      <div class="unlock-animation">
+        <span class="big-lock-icon">🔓</span>
+        <div class="sparkles-decor">✨🌟✨</div>
+      </div>
+      <h2 id="lc-title" class="section-title">Level 1 Unlocked! 🎉</h2>
+      <div id="lc-stars" class="level-stars-display">⭐⭐⭐</div>
+      <p id="lc-subtitle" class="lead-text">Great teamwork! The lock popped open!</p>
+
+      <div class="roles-rotation-box candy-card card-yellow">
+        <h3>🔄 Rotating Team Roles for Next Level:</h3>
+        <p id="lc-roles-desc">Pupil 2 is now Navigator 🧭, Pupil 3 is Reader 📖, Pupil 1 is Checker ✅</p>
+      </div>
+
+      <button id="btn-g1-next-level" class="candy-btn candy-btn-xl candy-green">Enter Next World 🚀</button>
+    </div>
+  </section>
+
+  <!-- SCREEN 5: GAME 1 RESULTS -->
+  <section id="screen-g1-results" class="app-screen">
+    <div class="screen-box candy-card text-center">
+      <div class="chest-animation">
+        <span id="results-chest-icon" class="big-chest-icon">👑🎁</span>
+      </div>
+      <h2 id="g1-results-title" class="section-title">Escape Successful! 🎉</h2>
+      <p id="g1-results-msg" class="lead-text">You opened all 3 locks together!</p>
+
+      <div class="results-stats-row">
+        <div class="stat-pill">🪙 Coins: <strong id="res-coins">18</strong></div>
+        <div class="stat-pill">⭐ Stars: <strong id="res-stars">9/9</strong></div>
+        <div class="stat-pill">⏱️ Time Used: <strong id="res-time">04:25</strong></div>
+      </div>
+
+      <div class="results-table-wrapper">
+        <table class="results-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Question</th>
+              <th>Result</th>
+              <th>Points</th>
+            </tr>
+          </thead>
+          <tbody id="g1-results-tbody">
+            <!-- Results rows generated dynamically -->
+          </tbody>
+        </table>
+      </div>
+
+      <div class="action-row">
+        <button id="btn-g1-replay" class="candy-btn candy-btn-lg candy-blue">Play Again 🔄</button>
+        <button id="btn-g1-home" class="candy-btn candy-btn-lg candy-pink">Back to Home 🏡</button>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- SCREEN 6: GAME 2 START -->
+  <section id="screen-g2-start" class="app-screen">
+    <div class="screen-box candy-card text-center">
+      <h2 class="section-title">📐 Game 2: Human Protractor</h2>
+      <p class="lead-text">Whole Class TV Activity • Stand in front of the camera!</p>
+
+      <div class="g2-instructions-box card-blue candy-card">
+        <div class="instruction-step">
+          <span class="step-num">1</span>
+          <span>Stand in front of the TV protractor.</span>
+        </div>
+        <div class="instruction-step">
+          <span class="step-num">2</span>
+          <span>One arm is the horizontal baseline on the 0° line.</span>
+        </div>
+        <div class="instruction-step">
+          <span class="step-num">3</span>
+          <span>Move your other arm to point at the target angle in 30 seconds!</span>
+        </div>
+      </div>
+
+      <div class="g2-toggle-row">
+        <label class="toggle-label">
+          <input type="checkbox" id="g2-practice-toggle">
+          <span class="toggle-custom"></span>
+          <span>💡 Practice Mode (Show angle type hints)</span>
+        </label>
+      </div>
+
+      <div class="action-row">
+        <button id="btn-g2-start" class="candy-btn candy-btn-xl candy-purple">Start Human Protractor 📐</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREEN 7: GAME 2 ROUND (FULL PROTRACTOR SCREEN) -->
+  <section id="screen-g2-round" class="app-screen g2-full-screen">
+    <!-- Full Screen Protractor SVG -->
+    <div class="protractor-viewport">
+      <svg id="protractor-svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid meet">
+        <!-- SVG content rendered programmatically in app.js -->
+      </svg>
+    </div>
+
+    <!-- TOP LEFT: Round Target Info Box -->
+    <div class="g2-top-left-panel candy-card">
+      <div class="round-counter-tag" id="g2-round-tag">Round 1 of 4</div>
+      <div class="target-degree-display" id="g2-target-text">Make 90°</div>
+      <div id="g2-hint-text" class="target-hint-text hidden">Hint: Right Angle 📐</div>
+    </div>
+
+    <!-- TOP RIGHT: Circular Countdown Ring -->
+    <div class="g2-top-right-panel candy-card">
+      <div class="circular-timer-wrapper">
+        <svg class="timer-svg" viewBox="0 0 120 120">
+          <circle class="timer-circle-bg" cx="60" cy="60" r="52"></circle>
+          <circle id="timer-ring-path" class="timer-circle-fill" cx="60" cy="60" r="52"></circle>
+        </svg>
+        <span id="g2-timer-digits" class="circular-timer-num">30</span>
+      </div>
+    </div>
+
+    <!-- Pre-Round Countdown Overlay -->
+    <div id="g2-getready-overlay" class="getready-overlay">
+      <div id="g2-getready-text" class="getready-bounce">Get Ready!</div>
+    </div>
+
+    <!-- BOTTOM TEACHER PANEL -->
+    <div id="g2-teacher-panel" class="g2-bottom-panel">
+      <div id="g2-eval-buttons" class="eval-btn-group hidden">
+        <button id="btn-g2-correct" class="candy-btn candy-btn-lg candy-green">✅ Correct, give gift 🎁</button>
+        <button id="btn-g2-wrong" class="candy-btn candy-btn-lg candy-orange">❌ Not this time</button>
+      </div>
+
+      <div class="gift-counter-pill">
+        <span>Gifts Earned:</span>
+        <span id="gift-count-display" class="gift-badges">🎁 0</span>
+      </div>
+
+      <button id="btn-g2-next-angle" class="candy-btn candy-btn-lg candy-blue">Next Angle ➡️ (Space)</button>
+    </div>
+
+    <!-- Teacher Keyboard Shortcuts Reference Panel -->
+    <div id="g2-shortcuts-panel" class="shortcuts-mini-panel">
+      <span>Shortcuts: <strong>Space</strong>: Next | <strong>R</strong>: Reveal | <strong>P</strong>: Pause | <strong>F</strong>: Flip | <strong>T</strong>: Theme | <strong>H</strong>: Hide Panel | <strong>↑/↓/+/-</strong>: Calibrate | <strong>0</strong>: Reset</span>
+    </div>
+  </section>
+
+  <!-- SCREEN 8: GAME 2 FINISH -->
+  <section id="screen-g2-finish" class="app-screen">
+    <div class="screen-box candy-card text-center">
+      <div class="trophy-holder">
+        <!-- SVG Gold Trophy -->
+        <svg width="200" height="200" viewBox="0 0 200 200">
+          <path d="M 50 30 L 150 30 L 140 100 C 140 130, 120 150, 100 150 C 80 150, 60 130, 60 100 Z" fill="#facc15" stroke="#b45309" stroke-width="6"/>
+          <path d="M 50 40 C 20 40, 20 80, 55 80" fill="none" stroke="#facc15" stroke-width="10" stroke-linecap="round"/>
+          <path d="M 150 40 C 180 40, 180 80, 145 80" fill="none" stroke="#facc15" stroke-width="10" stroke-linecap="round"/>
+          <rect x="85" y="150" width="30" height="25" fill="#ca8a04"/>
+          <rect x="60" y="175" width="80" height="20" rx="6" fill="#78350f"/>
+          <polygon points="100,50 108,66 126,69 113,82 116,100 100,91 84,100 87,82 74,69 92,66" fill="#ffffff"/>
+        </svg>
+      </div>
+
+      <h2 class="section-title">Great Job, Protractors! 🎉</h2>
+      <p class="lead-text">Total Gifts Awarded: <strong id="g2-final-gifts" class="highlight-text">🎁 4</strong></p>
+
+      <div class="action-row">
+        <button id="btn-g2-replay" class="candy-btn candy-btn-lg candy-purple">Play Again 🔄</button>
+        <button id="btn-g2-home" class="candy-btn candy-btn-lg candy-pink">Back to Home 🏡</button>
+      </div>
+    </div>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>
