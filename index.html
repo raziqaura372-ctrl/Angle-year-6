@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Angle Quest 🎯</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Top Bar Controls -->
+    <div class="top-bar">
+      <button class="btn btn-purple" id="btn-home" onclick="goHome()" style="min-height: 60px; min-width: 140px; font-size: 1.4rem;">🏠 Home</button>
+      <button class="btn btn-cyan btn-icon" id="btn-mute" onclick="toggleMute()" title="Toggle Mute">🔊</button>
+    </div>
+
+    <!-- Screen 1: Home Screen -->
+    <div id="screen-home" class="screen">
+      <h1 class="title-large">Angle Quest 🎯</h1>
+      <p class="instruction-text">Year 6 Space: Angles Micro-Teaching Lesson</p>
+
+      <div class="game-cards">
+        <div class="game-card">
+          <h2>🔐 Game 1: Angle Escape Room</h2>
+          <p>10 Minutes • Tablet Activity • 1 Group of 3 Pupils</p>
+          <p class="body-text">Work together to open 3 locks by solving 9 angle challenges!</p>
+          <button class="btn btn-success" onclick="startEscapeRoomIntro()">Play Escape Room</button>
+        </div>
+
+        <div class="game-card">
+          <h2>📐 Game 2: Human Protractor</h2>
+          <p>5 Minutes • Whole Class Activity • TV & Camera</p>
+          <p class="body-text">Stand in front of the giant TV protractor and make angles with your arms!</p>
+          <button class="btn btn-cyan" onclick="startHumanProtractorIntro()">Play Human Protractor</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen 2: Escape Room Intro -->
+    <div id="screen-escape-intro" class="screen hidden">
+      <h1 class="title-large">🔐 Angle Escape Room</h1>
+      <div class="question-card" style="max-width: 900px;">
+        <p class="instruction-text">Group Rules & Role Assignments</p>
+        <p class="body-text" style="color: var(--accent-yellow); font-weight: bold; font-size: 2rem;">
+          "No answer is submitted until all 3 agree!"
+        </p>
+        <div class="roles-banner">
+          <div class="role-tag">📱 <strong>Navigator:</strong> Taps the screen</div>
+          <div class="role-tag">📖 <strong>Reader:</strong> Reads questions aloud</div>
+          <div class="role-tag">✅ <strong>Checker:</strong> Confirms "We agree!"</div>
+        </div>
+        <p class="body-text" style="color: var(--text-muted);">
+          Roles rotate automatically each level. You have 10:00 to solve 9 questions across 3 levels.
+        </p>
+        <button class="btn btn-success" onclick="startEscapeRoomPlay()">Start Game 🚀</button>
+      </div>
+    </div>
+
+    <!-- Screen 3: Escape Room Play -->
+    <div id="screen-escape-play" class="screen hidden">
+      <div class="escape-header">
+        <div class="lock-progress">
+          <div id="lock-level-1" class="lock-item active">🔒 Level 1</div>
+          <div id="lock-level-2" class="lock-item">🔒 Level 2</div>
+          <div id="lock-level-3" class="lock-item">🔒 Level 3</div>
+        </div>
+        <div id="q-counter" class="badge">Question 1 of 9</div>
+        <div id="escape-timer-display" class="badge" style="font-size: 1.8rem; background: #0f172a;">⏱️ 10:00</div>
+      </div>
+
+      <div class="roles-banner">
+        <div class="role-tag">📱 <strong>Navigator:</strong> <span id="role-nav">Pupil A</span></div>
+        <div class="role-tag">📖 <strong>Reader:</strong> <span id="role-reader">Pupil B</span></div>
+        <div class="role-tag">✅ <strong>Checker:</strong> <span id="role-checker">Pupil C</span></div>
+      </div>
+
+      <div class="question-card">
+        <p id="q-text" class="instruction-text" style="margin-bottom: 0.5rem;"></p>
+        <div id="q-svg-container" class="svg-container"></div>
+        <div id="q-options-grid" class="options-grid"></div>
+        <button id="btn-agree-submit" class="btn btn-success" style="width: 100%; max-width: 600px; margin-top: 1rem;" disabled onclick="handleAgreeSubmit()">
+          ✅ We all agree
+        </button>
+      </div>
+    </div>
+
+    <!-- Screen 4: Escape Room Results -->
+    <div id="screen-escape-results" class="screen hidden">
+      <h1 class="title-large">🔐 Escape Summary</h1>
+      <p id="res-message" class="instruction-text"></p>
+
+      <div style="display: flex; gap: 2rem; margin-bottom: 1rem;">
+        <div class="badge">Score: <span id="res-score" style="color: var(--accent-yellow);"></span></div>
+        <div class="badge">Time: <span id="res-time" style="color: var(--accent-cyan);"></span></div>
+        <div class="badge">Rating: <span id="res-stars"></span></div>
+      </div>
+
+      <div style="width: 100%; max-width: 1100px; max-height: 400px; overflow-y: auto; background: var(--panel-bg); border-radius: 20px; border: 3px solid var(--panel-border);">
+        <table class="results-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Question</th>
+              <th>Result</th>
+              <th>Points</th>
+            </tr>
+          </thead>
+          <tbody id="res-table-body"></tbody>
+        </table>
+      </div>
+
+      <div style="margin-top: 1.5rem;">
+        <button class="btn btn-success" onclick="initEscapeGame()">Play Again 🔄</button>
+        <button class="btn btn-purple" onclick="goHome()">Main Menu 🏠</button>
+      </div>
+    </div>
+
+    <!-- Screen 5: Human Protractor Game -->
+    <div id="screen-hp-game" class="screen hidden" style="padding: 0;">
+      <div id="hp-canvas-container" class="protractor-canvas-container"></div>
+
+      <div id="hp-overlay-ui" class="protractor-overlay-ui">
+        <!-- Top Left Instruction -->
+        <div class="hp-top-left">
+          <div id="hp-round-info" class="badge" style="margin-bottom: 0.8rem; display: inline-flex;">Round 1 of 4</div>
+          <h2 id="hp-target-angle" style="font-size: 2.5rem; margin: 0; color: #fff;">Make an angle of 90°</h2>
+          <p id="hp-type-hint" style="font-size: 1.5rem; color: var(--accent-yellow); margin: 0.5rem 0 0 0; display: none;"></p>
+        </div>
+
+        <!-- Top Right Timer -->
+        <div class="hp-top-right">
+          <div id="hp-countdown-timer" class="badge" style="font-size: 2.2rem; background: rgba(15, 23, 42, 0.9);">30s Timer</div>
+        </div>
+
+        <!-- Bottom Teacher Controls -->
+        <div class="teacher-panel">
+          <div class="shortcuts-hint">
+            <strong>Teacher Shortcuts:</strong><br>
+            Space: Next | R: Reveal | P: Pause<br>
+            F: Flip | T: Theme | H: Clean Video<br>
+            ↑/↓/+/-: Align Shoulder | 0: Reset
+          </div>
+
+          <div class="teacher-controls">
+            <span id="hp-gift-count" class="badge" style="font-size: 1.6rem;">🎁 Gifts: 0</span>
+
+            <label style="font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; color: var(--text-main);">
+              <input type="checkbox" id="hp-practice-toggle" onchange="hpEngine.practiceMode = this.checked; renderHumanProtractorUI();"> Practice Mode
+            </label>
+
+            <button id="hp-btn-start-next" class="btn btn-success" onclick="startNextHPRound()" style="min-height: 60px; min-width: 180px; font-size: 1.4rem;">
+              Start / Next Angle ▶
+            </button>
+
+            <div id="hp-eval-buttons" style="display: none; gap: 1rem;">
+              <button class="btn btn-success" onclick="recordHPResult(true)" style="min-height: 60px; min-width: 180px; font-size: 1.4rem;">
+                ✅ Correct 🎁
+              </button>
+              <button class="btn btn-danger" onclick="recordHPResult(false)" style="min-height: 60px; min-width: 180px; font-size: 1.4rem;">
+                ❌ Not this time
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="svg_helpers.js"></script>
+  <script src="hp_engine.js"></script>
+  <script src="hp_controller.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
