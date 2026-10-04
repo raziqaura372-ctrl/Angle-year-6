@@ -29,4 +29,4 @@ jobs:
 
       - name: Run Pytest Suite
         run: |
-          pytest --cov=app --cov-report=term-missing
+          PYTHONPATH=. pytest --cov=app --cov-report=term-missing
